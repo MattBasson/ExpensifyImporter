@@ -69,6 +69,5 @@ Once all expense data is save including images, it gives me scope to create a li
 
 #### Model
 
-
-
+I wish to follow a code first approach to creating a model. 
 
