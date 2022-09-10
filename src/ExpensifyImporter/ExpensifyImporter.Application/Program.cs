@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MySqlConnector;
 using System.Reflection;
+using Serilog;
+using Microsoft.Extensions.Logging;
 
 var flagExtractor = new FlagExtractor(args);
 
@@ -28,7 +30,7 @@ if(flags.Any(a=>a.Flag == Flags.Help))
 if(flags.Any(a=>a.Flag == Flags.Directory))
 {
     //Directory flag specified processing can begin and resource newing up can start.
-    IConfigurationRoot configuration;
+
     var builder = Host.CreateDefaultBuilder(args)
         .ConfigureAppConfiguration((hostingContext, config) =>
         {
@@ -36,14 +38,24 @@ if(flags.Any(a=>a.Flag == Flags.Directory))
             config.AddJsonFile("appsettings.json", true, true);
             config.AddEnvironmentVariables();
             config.AddUserSecrets(Assembly.GetExecutingAssembly(), true);
-            configuration = config.Build();
-        })        
-        .ConfigureServices((services) =>
+        })
+        .ConfigureLogging(logging => logging.ClearProviders())
+        .UseSerilog((hostingContext, config) => { config.ReadFrom.Configuration(hostingContext.Configuration); })
+        .ConfigureServices((hostContext,services) =>
         {
+            IConfiguration configuration = hostContext.Configuration;
+
+            //Configure services here...
+
+
             services.AddDbContext<ExpensifyContext>((provider, options) =>
-            {
+            {   
                 var connectionString = new MySqlConnectionStringBuilder()
                 {
+                    Server = configuration["MySql:Server"],
+                    Port = configuration.GetValue<uint>("MySql:Port"),
+                    Database = configuration["MySql:Database"],
+                    ConnectionTimeout = 500
 
                 }.ToString();
                 options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString), builder =>
@@ -53,9 +65,11 @@ if(flags.Any(a=>a.Flag == Flags.Directory))
             });
         });
 
-    var app = builder.Build();
+    using IHost host = builder.Build();
 
-    app.Run();
+    
+
+    await host.RunAsync();
 
 }   
 

@@ -11,5 +11,10 @@ namespace ExpensifyImporter.Library.Database
     public class ExpensifyContext : DbContext
     {
         public DbSet<Expense> Expense { get; set; }
+
+        public ExpensifyContext(DbContextOptions<ExpensifyContext> options) : base(options)
+        {
+
+        }
     }
 }

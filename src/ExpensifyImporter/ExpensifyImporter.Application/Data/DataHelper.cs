@@ -24,7 +24,7 @@ namespace ExpensifyImporter.Application.Data
         public static List<ConsoleFlag> ConsoleFlags = new List<ConsoleFlag>() 
         { 
             new ConsoleFlag(Flags.Help, new string[] { "help", "h" }),
-            new ConsoleFlag(Flags.Directory, new string[] { "directory", "d" })
+            new ConsoleFlag(Flags.Directory, new string[] { "directory", "dir", "d"})
         };
     }
 }
