@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpensifyImporter.Library", "ExpensifyImporter.Library\ExpensifyImporter.Library.csproj", "{9812EBC8-0265-4933-A3C9-1E23CD277DD0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpensifyImporter.Database", "ExpensifyImporter.Database\ExpensifyImporter.Database.csproj", "{69BB7140-DDB0-4271-9881-2712EFABD875}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{9812EBC8-0265-4933-A3C9-1E23CD277DD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9812EBC8-0265-4933-A3C9-1E23CD277DD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9812EBC8-0265-4933-A3C9-1E23CD277DD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69BB7140-DDB0-4271-9881-2712EFABD875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69BB7140-DDB0-4271-9881-2712EFABD875}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69BB7140-DDB0-4271-9881-2712EFABD875}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69BB7140-DDB0-4271-9881-2712EFABD875}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -40,6 +46,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F18BEEEB-5E44-484B-ACD5-50016FE48252} = {3C5464D5-0177-4B8F-BABE-FB99F793BD5D}
 		{9812EBC8-0265-4933-A3C9-1E23CD277DD0} = {E6F1D523-527A-474B-AEA0-EEB1D30B3164}
+		{69BB7140-DDB0-4271-9881-2712EFABD875} = {E6F1D523-527A-474B-AEA0-EEB1D30B3164}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5ED2C6E7-C8DB-4E2E-A9DC-F4C6761956AD}

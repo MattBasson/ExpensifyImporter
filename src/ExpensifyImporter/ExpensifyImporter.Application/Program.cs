@@ -1,7 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using ExpensifyImporter.Application;
 using ExpensifyImporter.Application.Data;
-using ExpensifyImporter.Library.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +9,7 @@ using MySqlConnector;
 using System.Reflection;
 using Serilog;
 using Microsoft.Extensions.Logging;
+using ExpensifyImporter.Database;
 
 var flagExtractor = new FlagExtractor(args);
 
@@ -55,6 +55,9 @@ if(flags.Any(a=>a.Flag == Flags.Directory))
                     Server = configuration["MySql:Server"],
                     Port = configuration.GetValue<uint>("MySql:Port"),
                     Database = configuration["MySql:Database"],
+                    //Set with user secrets (for now)
+                    UserID = configuration["MySql:User"],
+                    Password = configuration["MySql:Password"],
                     ConnectionTimeout = 500
 
                 }.ToString();
