@@ -1,9 +1,9 @@
 # ExpensifyImporter
----
+
 A small application to imort Expensify receipts from Expensify
 
 ## Introduction
----
+
 Working as a freelancer in the past and having all my receipts stored in a third party service called Expensify, without a facility 
 too download the Image assets of the receipts that I have stored in this service. I want to shutdown the subscription because I was retiring my limited 
 company and the services it depended on. This is what prompted me to create this tool that 
@@ -11,7 +11,7 @@ imports the data from a report generated via their report generator and store in
 So I can retain the receipt images for HMRC and not keep paying expensify to hold them for me.
 
 ## Data
----
+
 There is no joy without the data, so the primary goal of this was to get the images of the receipts that I have uploaded.
 Expensify, who I used to store my receipts, didnt offer the download of these images, only the download of their urls.
 The url initially found was wrapper page inside their portal to which you would have to click another link to see the original image.
@@ -35,7 +35,7 @@ I also did notice that expensify had its own Api for integrating with, found [he
 I did look into this but thought that a simpler approach will be more suitable for how little I would be using this in the future.
 
 ## Version 1 (starting small)
----
+
 So i have the data with Urls pointing directly to the images I want along with expense data stored in Excel format.
 I will most likely get more of these files over time and wish that they be automatically updated into my database.
 
