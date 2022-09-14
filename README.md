@@ -44,6 +44,73 @@ The first iteration of this will be to write a console application that watches 
 
 I will be using .net 6, entityFramework and Mysql as my stack.
 
+### Code First
+---
+To create the model in your configured database .
+
+#### Config
+
+##### Database
+update the configuration in the appsettings.json file in the the root of the  ExpensifyImporter.Database application.
+
+see here an example
+
+`  "MySql": {
+    "Server": "localhost",
+    "Port": "3306",    "Database": "expensify"
+   }
+`
+
+User name and password have been ommitted from config so as not to commit this to version control.
+
+##### User Secrets
+
+Ensure to set user secrets for the following in database so that username and password are set when running.
+
+If user secrets are not enabled, enable with this
+
+`dotnet user-secrets init`     
+
+after wich you need to add user secrets for username and password as follows insidee the database project  directory
+
+` dotnet user-secrets set "MySql:User" "<username>"
+` 
+
+and
+
+` dotnet user-secrets set "MySql:Password" "<password>"
+` 
+
+more on user secrets can be found [here](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows)
+
+#### Entity Framework
+
+##### Migrations
+
+I make use of the dotnet ef tool to interact with EntityFramework for code first operations.
+
+###### Setup
+
+To set this up I run (assuming you have the dotnet-cli installed)
+
+`dotnet tool install --global dotnet-ef`
+
+Or to update
+
+`dotnet tool update --global dotnet-ef `
+
+
+###### Adding
+To add a migration to the model the following can be used, from within the database project.
+
+` dotnet ef migrations add <name of migration>`
+
+###### Publishing
+
+To publish you model to your configured database you can  run the following from within the database project.
+
+
+
 
 ### Watching for file changes
 ---
