@@ -11,6 +11,9 @@ using ExpensifyImporter.Database;
 using ExpensifyImporter.Library.Modules.Flags;
 using ExpensifyImporter.Library.Modules.Flags.Domain;
 using ExpensifyImporter.Library.Modules.EmbeddedData;
+using ExpensifyImporter.Library.Modules.ExcelReader;
+using ExpensifyImporter.Library.Modules.Io;
+using ExpensifyImporter.Application;
 
 var flagFactory = new FlagFactory(args);
 
@@ -31,6 +34,7 @@ if(flags.Any(a=>a.Flag == FlagType.Help))
 if(flags.Any(a=>a.Flag == FlagType.Directory))
 {
     //Directory flag specified processing can begin and resource newing up can start.
+    var fileWatchPath = flags.First(f => f.Flag == FlagType.Directory).FlagValue;
 
     var builder = Host.CreateDefaultBuilder(args)
         .ConfigureAppConfiguration((hostingContext, config) =>
@@ -47,7 +51,7 @@ if(flags.Any(a=>a.Flag == FlagType.Directory))
             IConfiguration configuration = hostContext.Configuration;
 
             //Configure services here...
-
+            
 
             services.AddDbContext<ExpensifyContext>((provider, options) =>
             {   
@@ -67,6 +71,10 @@ if(flags.Any(a=>a.Flag == FlagType.Directory))
                     builder.CommandTimeout(60);
                 });
             });
+            services.AddTransient<ExcelReader>();
+            services.AddTransient(x => new ExcelFileWatcher(x.GetRequiredService<ILogger<ExcelFileWatcher>>(), fileWatchPath));
+            services.AddHostedService<Worker>();
+
         });
 
     using IHost host = builder.Build();

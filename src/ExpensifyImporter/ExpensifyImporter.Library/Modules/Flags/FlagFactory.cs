@@ -25,7 +25,7 @@ namespace ExpensifyImporter.Library.Modules.Flags
             {
                 var argumentSuppliedFlags = args
                     .Where(w => w.Contains("--") || w.Contains("-"))
-                    .Select((s, i) => new { Index = i, Flag = s.Replace("-", ""), FlagValue = args.Length < i + 1 ? args[i + 1] : "" });
+                    .Select((s, i) => new { Index = i, Flag = s.Replace("-", ""), FlagValue = args.Length > (i)? args[i+1] : args[i] });
 
                 if (!argumentSuppliedFlags.Any())
                 {
