@@ -1,6 +1,4 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using ExpensifyImporter.Application;
-using ExpensifyImporter.Application.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,10 +8,13 @@ using System.Reflection;
 using Serilog;
 using Microsoft.Extensions.Logging;
 using ExpensifyImporter.Database;
+using ExpensifyImporter.Library.Modules.Flags;
+using ExpensifyImporter.Library.Modules.Flags.Domain;
+using ExpensifyImporter.Library.Modules.EmbeddedData;
 
-var flagExtractor = new FlagExtractor(args);
+var flagFactory = new FlagFactory(args);
 
-var flags = flagExtractor.GetSupportedFlags();
+var flags = flagFactory.GetSupportedFlags();
 
 if (!flags.Any())
 {
@@ -21,13 +22,13 @@ if (!flags.Any())
     Console.Read();
 }
 
-if(flags.Any(a=>a.Flag == Flags.Help))
+if(flags.Any(a=>a.Flag == FlagType.Help))
 {
-    Console.WriteLine(DataHelper.Get("ExpensifyImporter.Application.Data.Content.HelpContent.txt"));
+    Console.WriteLine(EmbeddedDataLoader.Get("ExpensifyImporter.Library.Modules.EmbeddedData.Content.HelpContent.txt"));
     Console.Read();
 }
 
-if(flags.Any(a=>a.Flag == Flags.Directory))
+if(flags.Any(a=>a.Flag == FlagType.Directory))
 {
     //Directory flag specified processing can begin and resource newing up can start.
 

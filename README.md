@@ -109,7 +109,7 @@ To add a migration to the model the following can be used, from within the datab
 
 To publish you model to your configured database you can  run the following from within the database project.
 
-
+`dotnet ef database update `
 
 
 ### Watching for file changes

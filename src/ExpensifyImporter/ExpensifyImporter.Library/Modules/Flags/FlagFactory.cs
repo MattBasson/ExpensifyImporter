@@ -1,25 +1,27 @@
-﻿using ExpensifyImporter.Application.Data;
+﻿using ExpensifyImporter.Library.Modules.EmbeddedData;
+using ExpensifyImporter.Library.Modules.Flags.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExpensifyImporter.Application
+namespace ExpensifyImporter.Library.Modules.Flags
 {
-    internal record SupportedFlag(Flags Flag, string FlagValue, string OriginalFlag);
-    internal class FlagExtractor
+    
+    public class FlagFactory
     {
         private readonly string[] args;
 
-        public FlagExtractor(string[] args)
+        public FlagFactory(string[] args)
         {
             this.args = args;
         }
 
-        public List<SupportedFlag> GetSupportedFlags() {
+        public List<SupportedFlag> GetSupportedFlags()
+        {
             var consoleFlags = new List<SupportedFlag>();
-            if (this.args.Length > 0)
+            if (args.Length > 0)
             {
                 var argumentSuppliedFlags = args
                     .Where(w => w.Contains("--") || w.Contains("-"))
@@ -31,10 +33,11 @@ namespace ExpensifyImporter.Application
                     return consoleFlags;
                 }
 
-                var supportedFlags = DataHelper.ConsoleFlags;
+                var supportedFlags = ConsoleFlags.PermittedConsoleFlags;
                 var flags = argumentSuppliedFlags
                     .Where(w => supportedFlags.Any(a => a.Variations.Contains(w.Flag)))
-                    .Select(s => {
+                    .Select(s =>
+                    {
                         var supportedFlag = supportedFlags.FirstOrDefault(a => a.Variations.Contains(s.Flag));
                         if (supportedFlag != null)
                         {
@@ -42,10 +45,10 @@ namespace ExpensifyImporter.Application
                         }
                         else
                         {
-                            return new SupportedFlag(Flags.Unsupported, s.Flag, s.FlagValue);
-                        }                        
+                            return new SupportedFlag(FlagType.Unsupported, s.Flag, s.FlagValue);
+                        }
                     });
-                
+
                 consoleFlags.AddRange(flags);
                 return consoleFlags;
 
@@ -56,8 +59,8 @@ namespace ExpensifyImporter.Application
             return consoleFlags;
 
         }
-    }        
+    }
 
-    
+
 }
 

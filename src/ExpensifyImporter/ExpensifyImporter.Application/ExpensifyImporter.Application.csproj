@@ -9,14 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Data\HelpContent.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Data\Content\HelpContent.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
   
 
     <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1" />
