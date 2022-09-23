@@ -10,9 +10,8 @@ using Microsoft.Extensions.Logging;
 using ExpensifyImporter.Database;
 using ExpensifyImporter.Library.Modules.Flags;
 using ExpensifyImporter.Library.Modules.Flags.Domain;
-using ExpensifyImporter.Library.Modules.EmbeddedData;
 using ExpensifyImporter.Library.Modules.ExcelReader;
-using ExpensifyImporter.Library.Modules.Io;
+using ExpensifyImporter.Library.Modules.IO;
 using ExpensifyImporter.Application;
 
 var flagFactory = new FlagFactory(args);
@@ -27,7 +26,7 @@ if (!flags.Any())
 
 if(flags.Any(a=>a.Flag == FlagType.Help))
 {
-    Console.WriteLine(EmbeddedDataLoader.Get("ExpensifyImporter.Library.Modules.EmbeddedData.Content.HelpContent.txt"));
+    Console.WriteLine(EmbeddedData.Get("ExpensifyImporter.Library.Content.Flags.HelpContent.txt"));
     Console.Read();
 }
 
@@ -63,7 +62,7 @@ if(flags.Any(a=>a.Flag == FlagType.Directory))
                     //Set with user secrets (for now)
                     UserID = configuration["MySql:User"],
                     Password = configuration["MySql:Password"],
-                    ConnectionTimeout = 500
+                    ConnectionTimeout = 3000
 
                 }.ToString();
                 options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString), builder =>

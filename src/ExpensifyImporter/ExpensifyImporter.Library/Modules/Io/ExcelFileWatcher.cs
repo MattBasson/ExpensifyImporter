@@ -7,22 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExpensifyImporter.Library.Modules.Io
+namespace ExpensifyImporter.Library.Modules.IO
 {
-    public class ExcelFileWatcher
+    public class ExcelFileWatcher:FileSystemWatcher
     {
-        private readonly ILogger<ExcelFileWatcher> _logger;
-        private readonly FileSystemWatcher _fileSystemWatcher;
+        private readonly ILogger<ExcelFileWatcher> _logger;        
 
 
-        public ExcelFileWatcher(ILogger<ExcelFileWatcher> logger, string path)
+
+        public ExcelFileWatcher(ILogger<ExcelFileWatcher> logger, string path):base(path)
         {
             _logger = logger;
             _logger.LogInformation($"Starting file watcher for this watchPath : {path}");
 
-            _fileSystemWatcher = new FileSystemWatcher(path);
-
-            //_fileSystemWatcher.NotifyFilter = NotifyFilters.Attributes
+            //this.NotifyFilter = NotifyFilters.Attributes
             //                     | NotifyFilters.CreationTime
             //                     | NotifyFilters.DirectoryName
             //                     | NotifyFilters.FileName
@@ -31,15 +29,15 @@ namespace ExpensifyImporter.Library.Modules.Io
             //                     | NotifyFilters.Security
             //                     | NotifyFilters.Size;
 
-            _fileSystemWatcher.Filter = "*.xlsx";
-            _fileSystemWatcher.IncludeSubdirectories = true;
-            _fileSystemWatcher.EnableRaisingEvents = true;
+            this.Filter = "*.xlsx";
+            this.IncludeSubdirectories = true;
+            this.EnableRaisingEvents = true;
 
-            _fileSystemWatcher.Changed += FileSystemWatcher_Changed;
-            _fileSystemWatcher.Created += FileSystemWatcher_Created;
-            _fileSystemWatcher.Deleted += FileSystemWatcher_Deleted;
-            _fileSystemWatcher.Renamed += FileSystemWatcher_Renamed;
-            _fileSystemWatcher.Error += FileSystemWatcher_Error;
+            this.Changed += FileSystemWatcher_Changed;
+            this.Created += FileSystemWatcher_Created;
+            this.Deleted += FileSystemWatcher_Deleted;
+            this.Renamed += FileSystemWatcher_Renamed;
+            this.Error += FileSystemWatcher_Error;
 
         }
 

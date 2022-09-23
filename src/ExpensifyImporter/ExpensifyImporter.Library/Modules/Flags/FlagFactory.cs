@@ -1,10 +1,4 @@
-﻿using ExpensifyImporter.Library.Modules.EmbeddedData;
-using ExpensifyImporter.Library.Modules.Flags.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ExpensifyImporter.Library.Modules.Flags.Domain;
 
 namespace ExpensifyImporter.Library.Modules.Flags
 {
@@ -25,7 +19,7 @@ namespace ExpensifyImporter.Library.Modules.Flags
             {
                 var argumentSuppliedFlags = args
                     .Where(w => w.Contains("--") || w.Contains("-"))
-                    .Select((s, i) => new { Index = i, Flag = s.Replace("-", ""), FlagValue = args.Length > (i)? args[i+1] : args[i] });
+                    .Select((s, i) => new { Index = i, Flag = s.Replace("-", ""), FlagValue = args.Length > (i+1)? args[i+1] : args[i] });
 
                 if (!argumentSuppliedFlags.Any())
                 {
@@ -41,11 +35,11 @@ namespace ExpensifyImporter.Library.Modules.Flags
                         var supportedFlag = supportedFlags.FirstOrDefault(a => a.Variations.Contains(s.Flag));
                         if (supportedFlag != null)
                         {
-                            return new SupportedFlag(supportedFlag.FlagType, s.FlagValue, s.Flag);
+                            return new SupportedFlag(supportedFlag.FlagType,  s.FlagValue, s.Flag);
                         }
                         else
                         {
-                            return new SupportedFlag(FlagType.Unsupported, s.Flag, s.FlagValue);
+                            return new SupportedFlag(FlagType.Unsupported, s.FlagValue, s.Flag);
                         }
                     });
 

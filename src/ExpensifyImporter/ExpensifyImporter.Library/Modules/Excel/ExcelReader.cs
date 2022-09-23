@@ -28,6 +28,7 @@ namespace ExpensifyImporter.Library.Modules.ExcelReader
                 var dtTable = new DataTable();
                 //Lets open the existing excel file and read through its content . Open the excel using openxml sdk
                 using SpreadsheetDocument doc = SpreadsheetDocument.Open(path, false);
+                
                 //create the object for workbook part  
                 WorkbookPart workbookPart = doc.WorkbookPart;
                 Sheets thesheetcollection = workbookPart.Workbook.GetFirstChild<Sheets>();

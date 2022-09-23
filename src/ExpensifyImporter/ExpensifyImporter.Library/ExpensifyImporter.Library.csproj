@@ -7,14 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Modules\EmbeddedData\Content\HelpContent.txt" />
+    <None Remove="Content\HelpContent.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Modules\EmbeddedData\Content\HelpContent.txt" />
+    <EmbeddedResource Include="Content\Flags\HelpContent.txt" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Content\Excel\" />
     <Folder Include="Domain\" />
   </ItemGroup>
 
