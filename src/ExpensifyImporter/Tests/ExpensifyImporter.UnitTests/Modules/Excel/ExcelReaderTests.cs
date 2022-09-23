@@ -11,11 +11,14 @@ namespace ExpensifyImporter.UnitTests.Modules.Excel
     public class ExcelReaderTests
     {
         [Fact]
-        public void Reading_Excel_Returns_Correct_Data()
+        public void Reading_Excel_Test_File_Exists()
         {
             //Arrange
             var path = $"{Environment.CurrentDirectory}\\Modules\\Excel\\Data\\TestExcel.xlsx";
 
+            //Act
+
+            //Assert
             File.Exists(path).Should().BeTrue();
 
             path.Should().Contain("UnitTests");
