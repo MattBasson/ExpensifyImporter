@@ -15,10 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ApplicationDefinition Include="Modules\Excel\Data\TestExcel.xlsx" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="Modules\Excel\Data\TestExcel.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
