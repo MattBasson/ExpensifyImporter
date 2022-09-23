@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Content\Excel\" />
+    <Folder Include="Modules\ExcelReader" />
   </ItemGroup>
 
   <ItemGroup>

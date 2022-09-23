@@ -1,15 +1,9 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+﻿using System.Text.Json;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
-namespace ExpensifyImporter.Library.Modules.ExcelReader
+namespace ExpensifyImporter.Library.Modules.Excel
 {
     public class ExcelReader
     {

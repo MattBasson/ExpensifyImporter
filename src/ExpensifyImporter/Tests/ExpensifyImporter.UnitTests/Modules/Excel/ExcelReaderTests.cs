@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using ExpensifyImporter.Library.Modules.ExcelReader;
+using ExpensifyImporter.Library.Modules.Excel;
+
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;

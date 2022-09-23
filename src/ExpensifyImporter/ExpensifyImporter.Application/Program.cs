@@ -10,9 +10,9 @@ using Microsoft.Extensions.Logging;
 using ExpensifyImporter.Database;
 using ExpensifyImporter.Library.Modules.Flags;
 using ExpensifyImporter.Library.Modules.Flags.Domain;
-using ExpensifyImporter.Library.Modules.ExcelReader;
 using ExpensifyImporter.Library.Modules.IO;
 using ExpensifyImporter.Application;
+using ExpensifyImporter.Library.Modules.Excel;
 
 var flagFactory = new FlagFactory(args);
 
