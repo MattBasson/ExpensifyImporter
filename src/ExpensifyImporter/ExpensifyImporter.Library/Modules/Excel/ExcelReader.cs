@@ -23,87 +23,65 @@ namespace ExpensifyImporter.Library.Modules.ExcelReader
 
         public string ReadAsJson(string path)
         {
+            var bookList = new List<List<string[]>>();
             try
             {
-                var dtTable = new DataTable();
                 //Lets open the existing excel file and read through its content . Open the excel using openxml sdk
-                using SpreadsheetDocument doc = SpreadsheetDocument.Open(path, false);
-                
-                //create the object for workbook part  
-                WorkbookPart workbookPart = doc.WorkbookPart;
-                Sheets thesheetcollection = workbookPart.Workbook.GetFirstChild<Sheets>();
+                using SpreadsheetDocument excelDocument = SpreadsheetDocument.Open(path, false);
 
-                //using for each loop to get the sheet from the sheetcollection  
-                foreach (Sheet thesheet in thesheetcollection.OfType<Sheet>())
+                var documentBody = excelDocument?.WorkbookPart?.Workbook;
+                var worksheetParts = documentBody?.WorkbookPart?.WorksheetParts;
+
+                if (worksheetParts == null) return JsonSerializer.Serialize(bookList);
+                foreach (var worksheetPart in worksheetParts)
                 {
-                    //statement to get the worksheet object by using the sheet id  
-                    Worksheet theWorksheet = ((WorksheetPart)workbookPart.GetPartById(thesheet.Id)).Worksheet;
+                    var sheet = worksheetPart.Worksheet;
+                    var rows = sheet.Descendants<Row>().ToList();
+                    var list = new List<string[]>();
 
-                    SheetData thesheetdata = theWorksheet.GetFirstChild<SheetData>();
-
-
-
-                    for (int rCnt = 0; rCnt < thesheetdata.ChildElements.Count(); rCnt++)
+                    foreach (var row in rows)
                     {
-                        List<string> rowList = new List<string>();
-                        for (int rCnt1 = 0; rCnt1
-                            < thesheetdata.ElementAt(rCnt).ChildElements.Count(); rCnt1++)
+                        list.Add(row.Elements<Cell>().Select(cell =>
                         {
-
-                            Cell thecurrentcell = (Cell)thesheetdata.ElementAt(rCnt).ChildElements.ElementAt(rCnt1);
-                            //statement to take the integer value  
-                            string currentcellvalue = string.Empty;
-                            if (thecurrentcell.DataType != null)
+                            if (cell.CellValue == null) return cell.InnerText;
+                            if (cell?.DataType != null && cell.DataType == CellValues.SharedString)
                             {
-                                if (thecurrentcell.DataType == CellValues.SharedString)
+                                if (!int.TryParse(cell.InnerText, out var id)) return null;
+                                var item = excelDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable
+                                    .Elements<SharedStringItem>().ElementAt(id);
+                                if (item.Text != null)
                                 {
-                                    int id;
-                                    if (Int32.TryParse(thecurrentcell.InnerText, out id))
-                                    {
-                                        SharedStringItem item = workbookPart.SharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(id);
-                                        if (item.Text != null)
-                                        {
-                                            //first row will provide the column name.
-                                            if (rCnt == 0)
-                                            {
-                                                dtTable.Columns.Add(item.Text.Text);
-                                            }
-                                            else
-                                            {
-                                                rowList.Add(item.Text.Text);
-                                            }
-                                        }
-                                        else if (item.InnerText != null)
-                                        {
-                                            currentcellvalue = item.InnerText;
-                                        }
-                                        else if (item.InnerXml != null)
-                                        {
-                                            currentcellvalue = item.InnerXml;
-                                        }
-                                    }
+                                    return item.Text.Text;
+                                }
+
+                                if (item.InnerText != null)
+                                {
+                                    return item.InnerText;
+                                }
+
+                                if (item.InnerXml != null)
+                                {
+                                    return item.InnerXml;
                                 }
                             }
                             else
                             {
-                                if (rCnt != 0)//reserved for column values
-                                {
-                                    rowList.Add(thecurrentcell.InnerText);
-                                }
+                                return cell?.CellValue.Text;
                             }
-                        }
-                        if (rCnt != 0)//reserved for column values
-                            dtTable.Rows.Add(rowList.ToArray());
 
+                            return null;
+                        }).ToArray());
                     }
 
+                    bookList.Add(list);
                 }
 
-                return JsonSerializer.Serialize(dtTable);
+                return JsonSerializer.Serialize(bookList);
+
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex,ex.Message);
+                _logger.LogError(ex, ex.Message);
                 throw;
             }
         }

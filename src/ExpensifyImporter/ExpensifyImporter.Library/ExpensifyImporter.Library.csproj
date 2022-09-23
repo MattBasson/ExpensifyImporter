@@ -8,15 +8,16 @@
 
   <ItemGroup>
     <None Remove="Content\HelpContent.txt" />
+    <None Remove="Domain\**" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Content\Flags\HelpContent.txt" />
+    <EmbeddedResource Remove="Domain\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Content\Excel\" />
-    <Folder Include="Domain\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +26,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ExpensifyImporter.Database\ExpensifyImporter.Database.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Domain\**" />
   </ItemGroup>
 
  
