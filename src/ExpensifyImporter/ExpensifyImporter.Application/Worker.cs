@@ -13,6 +13,13 @@ namespace ExpensifyImporter.Application
         {
             _logger = logger;
             _excelFileWatcher = excelFileWatcher;
+            _excelFileWatcher.Created += _excelFileWatcher_Created;
+        }
+
+        private void _excelFileWatcher_Created(object sender, FileSystemEventArgs e)
+        {
+            //Functionality to read directory pathg
+            throw new NotImplementedException();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -20,7 +27,11 @@ namespace ExpensifyImporter.Application
             while (!stoppingToken.IsCancellationRequested)
             {
                 //_logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                await Task.Delay(1000, stoppingToken);
+
+
+                var path = _excelFileWatcher.Path;
+
+                await Task.Delay(60000, stoppingToken);
             }
         }
     }

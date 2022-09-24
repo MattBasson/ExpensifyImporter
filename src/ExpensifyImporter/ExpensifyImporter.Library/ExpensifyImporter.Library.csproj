@@ -9,16 +9,13 @@
   <ItemGroup>
     <None Remove="Content\HelpContent.txt" />
     <None Remove="Domain\**" />
+    <None Remove="Modules\ExcelReader\**" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Content\Flags\HelpContent.txt" />
     <EmbeddedResource Remove="Domain\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Content\Excel\" />
-    <Folder Include="Modules\ExcelReader" />
+    <EmbeddedResource Remove="Modules\ExcelReader\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +28,7 @@
 
   <ItemGroup>
     <Compile Remove="Domain\**" />
+    <Compile Remove="Modules\ExcelReader\**" />
   </ItemGroup>
 
  
