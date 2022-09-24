@@ -49,17 +49,29 @@ namespace ExpensifyImporter.UnitTests.Modules.Excel
         [Fact]
         public async Task Reading_Excel_File_Yields_Results_In_Correct_Structure()
         {
+
             //Arrange
             var path = $"{Environment.CurrentDirectory}\\Modules\\Excel\\Data\\TestExcel.xlsx";
             var excelReader = new ExcelReader(Substitute.For<ILogger<ExcelReader>>());
 
+            var expectedResponseDEserialised = new List<List<string[]>>();
+            expectedResponseDEserialised.Add(new List<string[]>() {
+                new string[] { "Id", "Name","Salary"},
+                new string[] { "8BC78143-9FD5-45E4-AEED-F5648D58473C", "Matt","1000"},
+                new string[] { "46C6F115-B719-48BF-8EE1-3ABF480DF748", "Tess","1200"},
+                new string[] { "5088AB6B-CFCE-4531-BDFE-1E79CCAA7A3D", "Barry","1300"}
+            });
+
+
+            //Act
             var excelResponse = excelReader.ReadAsJson(path);
 
-            using var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(excelResponse));
-            var jsonDocument = await JsonDocument.ParseAsync(memoryStream);
+            var excelResponseDeserialised = JsonSerializer.Deserialize<List<List<string[]>>>(excelResponse);
 
-            jsonDocument.RootElement.Should().BeNull();
 
+            //Assert
+
+            excelResponseDeserialised.Should().BeEquivalentTo(excelResponseDeserialised);
         }
     }
 }
