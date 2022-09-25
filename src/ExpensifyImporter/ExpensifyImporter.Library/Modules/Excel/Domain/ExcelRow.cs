@@ -20,6 +20,8 @@ namespace ExpensifyImporter.Library.Modules.Excel.Domain
         {
         }
 
+        public ExcelCell this[int i] => this.First(f => f.Index == i);
+
 
     }
 }

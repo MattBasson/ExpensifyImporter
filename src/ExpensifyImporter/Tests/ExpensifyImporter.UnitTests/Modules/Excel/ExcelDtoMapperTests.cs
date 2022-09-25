@@ -28,27 +28,27 @@ namespace ExpensifyImporter.UnitTests.Modules.Excel
                 {
                     new ExcelRow()
                     {
-                        new ExcelCell("Id"),
-                        new ExcelCell("Name"),
-                        new ExcelCell("Salary"),
+                        new ExcelCell(0,"Id"),
+                        new ExcelCell(1,"Name"),
+                        new ExcelCell(2,"Salary"),
                     },
                     new ExcelRow()
                     {
-                        new ExcelCell("8BC78143-9FD5-45E4-AEED-F5648D58473C"),
-                        new ExcelCell("Matt"),
-                        new ExcelCell("1000"),
+                        new ExcelCell(0,"8BC78143-9FD5-45E4-AEED-F5648D58473C"),
+                        new ExcelCell(1,"Matt"),
+                        new ExcelCell(2,"1000"),
                     },
                     new ExcelRow()
                     {
-                        new ExcelCell("46C6F115-B719-48BF-8EE1-3ABF480DF748"),
-                        new ExcelCell("Tess"),
-                        new ExcelCell("1200"),
+                        new ExcelCell(0,"46C6F115-B719-48BF-8EE1-3ABF480DF748"),
+                        new ExcelCell(1,"Tess"),
+                        new ExcelCell(2,"1200"),
                     },
                     new ExcelRow()
                     {
-                        new ExcelCell("5088AB6B-CFCE-4531-BDFE-1E79CCAA7A3D"),
-                        new ExcelCell("Barry"),
-                        new ExcelCell("1300"),
+                        new ExcelCell(0,"5088AB6B-CFCE-4531-BDFE-1E79CCAA7A3D"),
+                        new ExcelCell(1,"Barry"),
+                        new ExcelCell(2,"1300"),
                     }
 
                 }
@@ -71,24 +71,24 @@ namespace ExpensifyImporter.UnitTests.Modules.Excel
             var expectedPocoList = new List<ExcelSheet>()
             {
                 new ExcelSheet()
-                {                   
+                {                 
                     new ExcelRow()
                     {
-                        new ExcelCell("8BC78143-9FD5-45E4-AEED-F5648D58473C"),
-                        new ExcelCell("Matt"),
-                        new ExcelCell("1000"),
+                        new ExcelCell(0,"8BC78143-9FD5-45E4-AEED-F5648D58473C"),
+                        new ExcelCell(1,"Matt"),
+                        new ExcelCell(2,"1000"),
                     },
                     new ExcelRow()
                     {
-                        new ExcelCell("46C6F115-B719-48BF-8EE1-3ABF480DF748"),
-                        new ExcelCell("Tess"),
-                        new ExcelCell("1200"),
+                        new ExcelCell(0,"46C6F115-B719-48BF-8EE1-3ABF480DF748"),
+                        new ExcelCell(1,"Tess"),
+                        new ExcelCell(2,"1200"),
                     },
                     new ExcelRow()
                     {
-                        new ExcelCell("5088AB6B-CFCE-4531-BDFE-1E79CCAA7A3D"),
-                        new ExcelCell("Barry"),
-                        new ExcelCell("1300"),
+                        new ExcelCell(0,"5088AB6B-CFCE-4531-BDFE-1E79CCAA7A3D"),
+                        new ExcelCell(1,"Barry"),
+                        new ExcelCell(2,"1300"),
                     }
 
                 }

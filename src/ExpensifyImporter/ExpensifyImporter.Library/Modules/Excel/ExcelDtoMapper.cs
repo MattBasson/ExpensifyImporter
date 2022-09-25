@@ -28,6 +28,7 @@ namespace ExpensifyImporter.Library.Modules.Excel
             {
                 var excelSheet = new ExcelSheet();
                 int rowCounter = 0;
+               
                 foreach (var row in sheet)
                 {
                     if (rowCounter == 0 && firstRowHasHeaders)
@@ -35,11 +36,11 @@ namespace ExpensifyImporter.Library.Modules.Excel
                         rowCounter++;
                         continue;
                     }
-                    
-                    var excelRow = new ExcelRow();
-                    foreach (var cell in row)
+                    var excelRow = new ExcelRow(); 
+                    for (int cellIndex = 0; cellIndex < row.Length; cellIndex++)
                     {
-                       excelRow.Add(new ExcelCell(cell));
+                         excelRow.Add(new ExcelCell(cellIndex, row[cellIndex]));
+                                                
                     }
                     excelSheet.Add(excelRow);
                     rowCounter++;

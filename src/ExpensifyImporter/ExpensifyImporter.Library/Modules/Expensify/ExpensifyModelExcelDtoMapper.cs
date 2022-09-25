@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Office2013.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using ExpensifyImporter.Database.Domain;
 using ExpensifyImporter.Library.Modules.Excel;
 using ExpensifyImporter.Library.Modules.Excel.Domain;
@@ -34,53 +35,24 @@ namespace ExpensifyImporter.Library.Modules.Expensify
                 int rowCounter = 0;
                 foreach (var excelRow in excelSheet)
                 {
-                    if(rowCounter == 0 && firstRowHasHeaders) {
+                    if (rowCounter == 0 && firstRowHasHeaders)
+                    {
                         rowCounter++;
                         continue;
                     }
-                    var expense = new Expense();                    
-                    int cellCounter = 0;
-                    foreach(var excelCell in excelRow)
-                    {
-                        if (excelCell == null)
-                        {
-                            cellCounter++;
-                            continue;
-                        }                       
-
-                        switch (cellCounter)
-                        {
-                            case 0:
-                                expense.ExpenseId = int.Parse(excelCell.CellValue);
-                                break;
-                            case 1:
-                                expense.ReceiptId = int.Parse(excelCell.CellValue);
-                                break;
-                            case 2:
-                                expense.TransactionDateTime = DateTime.ParseExact(excelCell.CellValue, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-                                break;
-                            case 3:
-                                expense.Merchant = excelCell.CellValue;
-                                break;
-                            case 4:
-                                expense.Amount = decimal.Parse(excelCell.CellValue);
-                                break;
-                            case 5:
-                                expense.Category = excelCell.CellValue;
-                                break;
-                            case 6:
-                                expense.Description = excelCell.CellValue;
-                                break;
-                            case 7:
-                                expense.ReceiptUrl = excelCell.CellValue;
-                                break;
-                        }
-
-                        cellCounter++;
-                    }
+                    var expense = new Expense();
+                    expense.ExpenseId = int.Parse(excelRow[0]?.CellValue);
+                    expense.ReceiptId = int.Parse(excelRow[1]?.CellValue);
+                    expense.TransactionDateTime = DateTime.ParseExact(excelRow[2]?.CellValue, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                    expense.Merchant = excelRow[3]?.CellValue;
+                    expense.Amount = decimal.Parse(excelRow[4]?.CellValue);
+                    expense.Category = excelRow[5]?.CellValue;
+                    expense.Description = excelRow[6]?.CellValue;
+                    expense.ReceiptUrl = excelRow[7]?.CellValue;
                     expenses.Add(expense);
                     rowCounter++;
                 }
+
             }
             return expenses;
         }

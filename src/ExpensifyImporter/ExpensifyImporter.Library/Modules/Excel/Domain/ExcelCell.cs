@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace ExpensifyImporter.Library.Modules.Excel.Domain
 {
-    public record ExcelCell(string? CellValue);
+    public record ExcelCell(int Index,string? CellValue);
 }
