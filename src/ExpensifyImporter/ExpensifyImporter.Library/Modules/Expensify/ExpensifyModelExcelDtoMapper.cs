@@ -41,14 +41,13 @@ namespace ExpensifyImporter.Library.Modules.Expensify
                         continue;
                     }
                     var expense = new Expense();
-                    expense.ExpenseId = int.Parse(excelRow[0]?.CellValue);
-                    expense.ReceiptId = int.Parse(excelRow[1]?.CellValue);
-                    expense.TransactionDateTime = DateTime.ParseExact(excelRow[2]?.CellValue, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-                    expense.Merchant = excelRow[3]?.CellValue;
-                    expense.Amount = decimal.Parse(excelRow[4]?.CellValue);
-                    expense.Category = excelRow[5]?.CellValue;
-                    expense.Description = excelRow[6]?.CellValue;
-                    expense.ReceiptUrl = excelRow[7]?.CellValue;
+                    expense.ExpenseId = int.Parse(excelRow[0]?.CellValue);                    
+                    expense.TransactionDateTime = DateTime.ParseExact(excelRow[1]?.CellValue, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                    expense.Merchant = excelRow[2]?.CellValue;
+                    expense.Amount = decimal.Parse(excelRow[3]?.CellValue);
+                    expense.Category = excelRow[4]?.CellValue;
+                    expense.Description = excelRow[5]?.CellValue;
+                    expense.ReceiptUrl = excelRow[6]?.CellValue;
                     expenses.Add(expense);
                     rowCounter++;
                 }

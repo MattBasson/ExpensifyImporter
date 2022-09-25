@@ -22,7 +22,7 @@ namespace ExpensifyImporter.Library.Modules.Excel
 
         public List<ExcelSheet> Deserialize(string excelJson,bool firstRowHasHeaders = true)
         {
-            var excelResponseDeserialised = JsonSerializer.Deserialize<List<List<string[]>>>(excelJson);
+            var excelResponseDeserialised = JsonSerializer.Deserialize<IEnumerable<IEnumerable<string[]>>>(excelJson);
             var book = new List<ExcelSheet>();
             foreach (var sheet in excelResponseDeserialised)
             {

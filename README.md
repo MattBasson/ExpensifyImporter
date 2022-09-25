@@ -34,6 +34,13 @@ I chose the export format .xls (Excel)
 I also did notice that expensify had its own Api for integrating with, found [here](https://integrations.expensify.com/Integration-Server/doc/#report-exporter).
 I did look into this but thought that a simpler approach will be more suitable for how little I would be using this in the future.
 
+### Reporting Dates
+2017-02-01 - 2019-02-01
+
+2019-02-01 - 2021-02-01
+
+2021-02-01 - 2022-09-01
+
 ## Version 1 (starting small)
 
 So i have the data with Urls pointing directly to the images I want along with expense data stored in Excel format.

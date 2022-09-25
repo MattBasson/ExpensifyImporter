@@ -12,10 +12,7 @@ namespace ExpensifyImporter.Database.Domain
         public Guid Id { get; set; }
 
         [Column("expense_id")]
-        public int ExpenseId { get; set; }
-
-        [Column("receipt_id")]
-        public int ReceiptId { get; set; }
+        public int ExpenseId { get; set; }       
 
         [Column("transaction_datetime")]
         public DateTime TransactionDateTime { get; set; }
@@ -34,6 +31,12 @@ namespace ExpensifyImporter.Database.Domain
 
         [Column("receipt_url")]
         public string? ReceiptUrl { get; set; }
+
+        [Column("receipt_image")]
+        public byte[]? ReceiptImage { get; set; }
+        
+        [Column("company_id")]
+        public int CompanyId { get; set; }
 
     }
 }

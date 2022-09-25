@@ -3,6 +3,7 @@ using System;
 using ExpensifyImporter.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpensifyImporter.Database.Migrations
 {
     [DbContext(typeof(ExpensifyContext))]
-    partial class ExpensifyContextModelSnapshot : ModelSnapshot
+    [Migration("20220925205316_ReceiptImage")]
+    partial class ReceiptImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,10 +39,6 @@ namespace ExpensifyImporter.Database.Migrations
                         .HasColumnType("nvarchar(1000)")
                         .HasColumnName("category");
 
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("int")
-                        .HasColumnName("company_id");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(2000)")
                         .HasColumnName("description");
@@ -52,6 +50,10 @@ namespace ExpensifyImporter.Database.Migrations
                     b.Property<string>("Merchant")
                         .HasColumnType("nvarchar(1000)")
                         .HasColumnName("merchant");
+
+                    b.Property<int>("ReceiptId")
+                        .HasColumnType("int")
+                        .HasColumnName("receipt_id");
 
                     b.Property<byte[]>("ReceiptImage")
                         .HasColumnType("MEDIUMBLOB")
