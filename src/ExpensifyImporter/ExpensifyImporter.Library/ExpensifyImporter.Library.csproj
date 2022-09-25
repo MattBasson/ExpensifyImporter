@@ -31,6 +31,10 @@
     <Compile Remove="Modules\ExcelReader\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Modules\Expensify\Domain\" />
+  </ItemGroup>
+
  
 
 </Project>
