@@ -1,54 +1,43 @@
-﻿using ExpensifyImporter.Library.Modules.Excel.Domain;
+﻿using System.Text.Json;
+using ExpensifyImporter.Library.Modules.Excel.Domain;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace ExpensifyImporter.Library.Modules.Excel
 {
     public class ExcelDtoMapper
     {
         private readonly ILogger<ExcelDtoMapper> _logger;
-    
-        
+
 
         public ExcelDtoMapper(ILogger<ExcelDtoMapper> logger)
         {
-            _logger = logger;            
+            _logger = logger;
         }
 
-        public List<ExcelSheet> Deserialize(string excelJson,bool firstRowHasHeaders = true)
+        public async Task<List<ExcelSheet>> DeserializeAsync(string excelJson, bool firstRowHasHeaders = true)
         {
-            var excelResponseDeserialised = JsonSerializer.Deserialize<IEnumerable<IEnumerable<string[]>>>(excelJson);
+            var excelResponseDeserialised = JsonSerializer.Deserialize<IEnumerable<List<string[]>>>(excelJson);
             var book = new List<ExcelSheet>();
             foreach (var sheet in excelResponseDeserialised)
             {
-                var excelSheet = new ExcelSheet();
-                int rowCounter = 0;
-               
-                foreach (var row in sheet)
+                var getExcelRowTasks = new List<Task<ExcelRow>>();
+                
+                for (var rowIndex = 0; rowIndex < sheet.Count; rowIndex++)
                 {
-                    if (rowCounter == 0 && firstRowHasHeaders)
-                    {
-                        rowCounter++;
-                        continue;
-                    }
-                    var excelRow = new ExcelRow(); 
-                    for (int cellIndex = 0; cellIndex < row.Length; cellIndex++)
-                    {
-                         excelRow.Add(new ExcelCell(cellIndex, row[cellIndex]));
-                                                
-                    }
-                    excelSheet.Add(excelRow);
-                    rowCounter++;
+                    if (rowIndex == 0 && firstRowHasHeaders) continue;
+                    var row = sheet[rowIndex];
+                    getExcelRowTasks.Add(GetExcelRow(rowIndex,row));
                 }
+                var excelSheet = new ExcelSheet( await Task.WhenAll(getExcelRowTasks.ToArray()) );
                 book.Add(excelSheet);
             }
             return book;
         }
 
+        private Task<ExcelRow> GetExcelRow(int index, string[] row)
+        {
+            return Task.FromResult(new ExcelRow(row.Select((cell, index) => new ExcelCell(index, cell))));
+
+        }
     }
 }

@@ -1,25 +1,14 @@
-﻿using DocumentFormat.OpenXml.Office2013.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
-using ExpensifyImporter.Database.Domain;
-using ExpensifyImporter.Library.Modules.Excel;
-using ExpensifyImporter.Library.Modules.Excel.Domain;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ExpensifyImporter.Database.Domain;
+using ExpensifyImporter.Library.Modules.Excel.Domain;
+using Microsoft.Extensions.Logging;
 
 namespace ExpensifyImporter.Library.Modules.Expensify
 {
     public class ExpensifyModelExcelDtoMapper
     {
-
         private readonly ILogger<ExpensifyModelExcelDtoMapper> _logger;
-
-
 
         public ExpensifyModelExcelDtoMapper(ILogger<ExpensifyModelExcelDtoMapper> logger)
         {
@@ -28,35 +17,28 @@ namespace ExpensifyImporter.Library.Modules.Expensify
 
         public List<Expense> MapExpenses(List<ExcelSheet> excelBook, bool firstRowHasHeaders = true)
         {
-            var expenses = new List<Expense>();
+            var expenses = new ConcurrentBag<Expense>();
 
             foreach (var excelSheet in excelBook)
-            {
-                int rowCounter = 0;
-                foreach (var excelRow in excelSheet)
-                {
-                    if (rowCounter == 0 && firstRowHasHeaders)
+                Parallel.For(0, excelSheet.Count,
+                    excelRowIndex =>
                     {
-                        rowCounter++;
-                        continue;
-                    }
-                    var expense = new Expense();
-                    expense.ExpenseId = int.Parse(excelRow[0]?.CellValue);                    
-                    expense.TransactionDateTime = DateTime.ParseExact(excelRow[1]?.CellValue, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-                    expense.Merchant = excelRow[2]?.CellValue;
-                    expense.Amount = decimal.Parse(excelRow[3]?.CellValue);
-                    expense.Category = excelRow[4]?.CellValue;
-                    expense.Description = excelRow[5]?.CellValue;
-                    expense.ReceiptUrl = excelRow[6]?.CellValue;
-                    expenses.Add(expense);
-                    rowCounter++;
-                }
+                        if (excelRowIndex == 0 && firstRowHasHeaders) return;
 
-            }
-            return expenses;
+                        var excelRow = excelSheet[excelRowIndex];
+                        expenses.Add(new Expense
+                        {
+                            ExpenseId = int.Parse(excelRow[0]?.CellValue ?? "0"),
+                            TransactionDateTime = DateTime.ParseExact(excelRow[1]?.CellValue ?? string.Empty,
+                                "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+                            Merchant = excelRow[2]?.CellValue,
+                            Amount = decimal.Parse(excelRow[3]?.CellValue ?? "0"),
+                            Category = excelRow[4]?.CellValue,
+                            Description = excelRow[5]?.CellValue,
+                            ReceiptUrl = excelRow[6]?.CellValue
+                        });
+                    });
+            return expenses.ToList();
         }
-
-        
-
     }
 }
