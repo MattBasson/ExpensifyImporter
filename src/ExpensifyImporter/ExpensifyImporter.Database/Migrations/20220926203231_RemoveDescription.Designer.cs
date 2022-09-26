@@ -3,6 +3,7 @@ using System;
 using ExpensifyImporter.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpensifyImporter.Database.Migrations
 {
     [DbContext(typeof(ExpensifyContext))]
-    partial class ExpensifyContextModelSnapshot : ModelSnapshot
+    [Migration("20220926203231_RemoveDescription")]
+    partial class RemoveDescription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

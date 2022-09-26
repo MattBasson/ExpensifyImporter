@@ -38,9 +38,8 @@ namespace ExpensifyImporter.Library.Modules.Expensify
                     "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                 Merchant = excelRow[1]?.CellValue,
                 Amount = decimal.Parse(excelRow[2]?.CellValue ?? "0"),
-                Category = excelRow[3]?.CellValue,
-                Description = excelRow[4]?.CellValue,
-                ReceiptUrl = excelRow[5]?.CellValue
+                Category = excelRow[3]?.CellValue,                
+                ReceiptUrl = excelRow[4]?.CellValue
             });
         }
     }

@@ -23,9 +23,8 @@ public class ExpensifyModelExcelDtoMapperTests
                     new(0, "2017-04-01 12:00:00"),
                     new(1, "Costa"),
                     new(2, "11.1"),
-                    new(3, "Meals"),
-                    new(4, ""),
-                    new(5, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef131.jpg")
+                    new(3, "Meals"),                    
+                    new(4, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef131.jpg")
                 },
                 new ExcelRow
                 {
@@ -33,26 +32,23 @@ public class ExpensifyModelExcelDtoMapperTests
                     new(1, "Mcdonalds"),
                     new(2, "12.2"),
                     new(3, "Meals"),
-                    new(4, ""),
-                    new(5, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef132.jpg")
+                    new(4, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef132.jpg")
                 },
                 new ExcelRow
                 {
                     new(0, "2017-04-03 12:00:00"),
                     new(1, "Eat"),
                     new(2, "13.3"),
-                    new(3, "Meals"),
-                    new(4, ""),
-                    new(5, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef133.jpg")
+                    new(3, "Meals"),                    
+                    new(4, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef133.jpg")
                 },
                 new ExcelRow
                 {
                     new(0, "2017-04-04 12:00:00"),
                     new(1, "Wasabi"),
                     new(2, "14.4"),
-                    new(3, "Meals"),
-                    new(4, ""),
-                    new(5, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef134.jpg")
+                    new(3, "Meals"),                    
+                    new(4, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef134.jpg")
                 }
             }
         };
@@ -67,8 +63,7 @@ public class ExpensifyModelExcelDtoMapperTests
                     CultureInfo.InvariantCulture),
                 Merchant = "Costa",
                 Amount = 11.1M,
-                Category = "Meals",
-                Description = "",
+                Category = "Meals",                
                 ReceiptUrl = "https://www.expensify.com/receipts/w_8c12334126141c5a124ef131.jpg"
             },
             new()
@@ -78,7 +73,6 @@ public class ExpensifyModelExcelDtoMapperTests
                 Merchant = "Mcdonalds",
                 Amount = 12.2M,
                 Category = "Meals",
-                Description = "",
                 ReceiptUrl = "https://www.expensify.com/receipts/w_8c12334126141c5a124ef132.jpg"
             },
             new()
@@ -88,7 +82,6 @@ public class ExpensifyModelExcelDtoMapperTests
                 Merchant = "Eat",
                 Amount = 13.3M,
                 Category = "Meals",
-                Description = "",
                 ReceiptUrl = "https://www.expensify.com/receipts/w_8c12334126141c5a124ef133.jpg"
             },
             new()
@@ -98,7 +91,6 @@ public class ExpensifyModelExcelDtoMapperTests
                 Merchant = "Wasabi",
                 Amount = 14.4M,
                 Category = "Meals",
-                Description = "",
                 ReceiptUrl = "https://www.expensify.com/receipts/w_8c12334126141c5a124ef134.jpg"
             }
         };

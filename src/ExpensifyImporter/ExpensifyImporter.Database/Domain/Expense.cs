@@ -24,8 +24,6 @@ namespace ExpensifyImporter.Database.Domain
         [Column("category")]
         public string? Category { get; set; }
 
-        [Column("description")]
-        public string? Description { get; set; }
 
         [Column("receipt_url")]
         public string? ReceiptUrl { get; set; }
