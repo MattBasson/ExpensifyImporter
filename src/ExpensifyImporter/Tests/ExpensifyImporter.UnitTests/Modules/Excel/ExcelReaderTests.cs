@@ -64,7 +64,7 @@ namespace ExpensifyImporter.UnitTests.Modules.Excel
 
 
             //Act
-            var excelResponse = excelReader.ReadAsJson(path);
+            var excelResponse = await excelReader.ReadAsJsonAsync(path);
 
             var excelResponseDeserialised = JsonSerializer.Deserialize<List<List<string[]>>>(excelResponse);
 

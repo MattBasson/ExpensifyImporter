@@ -11,62 +11,62 @@ namespace ExpensifyImporter.UnitTests.Modules.Expensify
     public class ExpensifyModelExcelDtoMapperTests
     {
         [Fact]
-        public void Mapping_ExcelBook_Collection_Yields_Correct_Expense_List()
+        public async Task Mapping_ExcelBook_Collection_Yields_Correct_Expense_List()
         {
             //Arrange
             var exccelPocoList = new List<ExcelSheet>()
             {
-                new ExcelSheet()
+                new()
                 {
                     new ExcelRow()
                     {
-                        new ExcelCell(0,"ExpenseId"),                        
-                        new ExcelCell(1,"TimeStamp"),
-                        new ExcelCell(2,"Merchant"),
-                        new ExcelCell(3,"Amount"),
-                        new ExcelCell(4,"Category"),
-                        new ExcelCell(5,"Description"),
-                        new ExcelCell(6,"ReceiptUrl"),
+                        new(0,"ExpenseId"),                        
+                        new(1,"TimeStamp"),
+                        new(2,"Merchant"),
+                        new(3,"Amount"),
+                        new(4,"Category"),
+                        new(5,"Description"),
+                        new(6,"ReceiptUrl"),
                     },
                     new ExcelRow()
                     {
-                        new ExcelCell(0,"1"),                        
-                        new ExcelCell(1,"2017-04-01 12:00:00"),
-                        new ExcelCell(2,"Costa"),
-                        new ExcelCell(3,"11.1"),
-                        new ExcelCell(4,"Meals"),
-                        new ExcelCell(5,""),
-                        new ExcelCell(6,"https://www.expensify.com/receipts/w_8c12334126141c5a124ef131.jpg"),
+                        new(0,"1"),                        
+                        new(1,"2017-04-01 12:00:00"),
+                        new(2,"Costa"),
+                        new(3,"11.1"),
+                        new(4,"Meals"),
+                        new(5,""),
+                        new(6,"https://www.expensify.com/receipts/w_8c12334126141c5a124ef131.jpg"),
                     },
                     new ExcelRow()
                     {
-                        new ExcelCell(0,"2"),                        
-                        new ExcelCell(1,"2017-04-02 12:00:00"),
-                        new ExcelCell(2,"Mcdonalds"),
-                        new ExcelCell(3,"12.2"),
-                        new ExcelCell(4,"Meals"),
-                        new ExcelCell(5,""),
-                        new ExcelCell(6,"https://www.expensify.com/receipts/w_8c12334126141c5a124ef132.jpg"),
+                        new(0,"2"),                        
+                        new(1,"2017-04-02 12:00:00"),
+                        new(2,"Mcdonalds"),
+                        new(3,"12.2"),
+                        new(4,"Meals"),
+                        new(5,""),
+                        new(6,"https://www.expensify.com/receipts/w_8c12334126141c5a124ef132.jpg"),
                     },
                     new ExcelRow()
                     {
-                        new ExcelCell(0,"3"),                        
-                        new ExcelCell(1,"2017-04-03 12:00:00"),
-                        new ExcelCell(2,"Eat"),
-                        new ExcelCell(3,"13.3"),
-                        new ExcelCell(4,"Meals"),
-                        new ExcelCell(5,""),
-                        new ExcelCell(6,"https://www.expensify.com/receipts/w_8c12334126141c5a124ef133.jpg"),
+                        new(0,"3"),                        
+                        new(1,"2017-04-03 12:00:00"),
+                        new(2,"Eat"),
+                        new(3,"13.3"),
+                        new(4,"Meals"),
+                        new(5,""),
+                        new(6,"https://www.expensify.com/receipts/w_8c12334126141c5a124ef133.jpg"),
                     },
                     new ExcelRow()
                     {
-                        new ExcelCell(0,"4"),                        
-                        new ExcelCell(1,"2017-04-04 12:00:00"),
-                        new ExcelCell(2,"Wasabi"),
-                        new ExcelCell(3,"14.4"),
-                        new ExcelCell(4,"Meals"),
-                        new ExcelCell(5,""),
-                        new ExcelCell(6,"https://www.expensify.com/receipts/w_8c12334126141c5a124ef134.jpg"),
+                        new(0,"4"),                        
+                        new(1,"2017-04-04 12:00:00"),
+                        new(2,"Wasabi"),
+                        new(3,"14.4"),
+                        new(4,"Meals"),
+                        new(5,""),
+                        new(6,"https://www.expensify.com/receipts/w_8c12334126141c5a124ef134.jpg"),
                     }
 
                 }
@@ -76,7 +76,7 @@ namespace ExpensifyImporter.UnitTests.Modules.Expensify
 
             var expectedExpenseList = new List<Expense>()
             {
-                new Expense()
+                new()
                 {                    
                     ExpenseId=1,                    
                     TransactionDateTime = DateTime.ParseExact("2017-04-01 12:00:00","yyyy-MM-dd HH:mm:ss",CultureInfo.InvariantCulture),
@@ -86,7 +86,7 @@ namespace ExpensifyImporter.UnitTests.Modules.Expensify
                     Description="",
                     ReceiptUrl = "https://www.expensify.com/receipts/w_8c12334126141c5a124ef131.jpg"
                 },
-                new Expense()
+                new()
                 {                    
                     ExpenseId=2,                    
                     TransactionDateTime = DateTime.ParseExact("2017-04-02 12:00:00","yyyy-MM-dd HH:mm:ss",CultureInfo.InvariantCulture),
@@ -96,7 +96,7 @@ namespace ExpensifyImporter.UnitTests.Modules.Expensify
                     Description="",
                     ReceiptUrl = "https://www.expensify.com/receipts/w_8c12334126141c5a124ef132.jpg"
                 },
-                new Expense()
+                new()
                 {                    
                     ExpenseId=3,                    
                     TransactionDateTime = DateTime.ParseExact("2017-04-03 12:00:00","yyyy-MM-dd HH:mm:ss",CultureInfo.InvariantCulture),
@@ -106,7 +106,7 @@ namespace ExpensifyImporter.UnitTests.Modules.Expensify
                     Description="",
                     ReceiptUrl = "https://www.expensify.com/receipts/w_8c12334126141c5a124ef133.jpg"
                 },
-                new Expense()
+                new()
                 {                    
                     ExpenseId=4,                    
                     TransactionDateTime = DateTime.ParseExact("2017-04-04 12:00:00","yyyy-MM-dd HH:mm:ss",CultureInfo.InvariantCulture),
@@ -119,7 +119,7 @@ namespace ExpensifyImporter.UnitTests.Modules.Expensify
             };
 
             //Act 
-            var expenses = mapper.MapExpenses(exccelPocoList);
+            var expenses = await mapper.MapExpensesAsync(exccelPocoList);
 
             //Assert
             expenses.Should().BeEquivalentTo(expectedExpenseList, opt => opt.Excluding(e => e.Id));

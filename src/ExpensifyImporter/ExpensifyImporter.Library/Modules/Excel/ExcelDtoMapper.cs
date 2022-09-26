@@ -16,25 +16,27 @@ namespace ExpensifyImporter.Library.Modules.Excel
 
         public async Task<List<ExcelSheet>> DeserializeAsync(string excelJson, bool firstRowHasHeaders = true)
         {
-            var excelResponseDeserialised = JsonSerializer.Deserialize<IEnumerable<List<string[]>>>(excelJson);
+            var excelResponseDeserialized = JsonSerializer.Deserialize<IEnumerable<List<string[]>>>(excelJson);
             var book = new List<ExcelSheet>();
-            foreach (var sheet in excelResponseDeserialised)
+            if (excelResponseDeserialized == null) return book;
+            foreach (var sheet in excelResponseDeserialized)
             {
                 var getExcelRowTasks = new List<Task<ExcelRow>>();
-                
+
                 for (var rowIndex = 0; rowIndex < sheet.Count; rowIndex++)
                 {
                     if (rowIndex == 0 && firstRowHasHeaders) continue;
                     var row = sheet[rowIndex];
-                    getExcelRowTasks.Add(GetExcelRow(rowIndex,row));
+                    getExcelRowTasks.Add(GetExcelRow(row));
                 }
-                var excelSheet = new ExcelSheet( await Task.WhenAll(getExcelRowTasks.ToArray()) );
+
+                var excelSheet = new ExcelSheet(await Task.WhenAll(getExcelRowTasks.ToArray()));
                 book.Add(excelSheet);
             }
             return book;
         }
 
-        private Task<ExcelRow> GetExcelRow(int index, string[] row)
+        private Task<ExcelRow> GetExcelRow( string[] row)
         {
             return Task.FromResult(new ExcelRow(row.Select((cell, index) => new ExcelCell(index, cell))));
 
