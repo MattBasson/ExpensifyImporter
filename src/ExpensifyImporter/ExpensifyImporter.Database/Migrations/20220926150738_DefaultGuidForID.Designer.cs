@@ -3,6 +3,7 @@ using System;
 using ExpensifyImporter.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpensifyImporter.Database.Migrations
 {
     [DbContext(typeof(ExpensifyContext))]
-    partial class ExpensifyContextModelSnapshot : ModelSnapshot
+    [Migration("20220926150738_DefaultGuidForID")]
+    partial class DefaultGuidForID
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,9 +40,7 @@ namespace ExpensifyImporter.Database.Migrations
                         .HasColumnName("category");
 
                     b.Property<int>("CompanyId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(1)
                         .HasColumnName("company_id");
 
                     b.Property<string>("Description")
