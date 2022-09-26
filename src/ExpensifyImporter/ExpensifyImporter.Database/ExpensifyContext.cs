@@ -29,6 +29,7 @@ namespace ExpensifyImporter.Database
             {
                 entity.HasKey(e => e.Id);
 
+                //entity.Property(e => e.Id).HasDefaultValue("NEWID()");
                 entity.Property(e => e.Merchant).HasColumnType("nvarchar(1000)");
                 entity.Property(e => e.Description).HasColumnType("nvarchar(2000)");
                 entity.Property(e => e.Category).HasColumnType("nvarchar(1000)");
