@@ -20,26 +20,16 @@ namespace ExpensifyImporter.Library.Modules.Excel
             var book = new List<ExcelSheet>();
             if (excelResponseDeserialized == null) return book;
             foreach (var sheet in excelResponseDeserialized)
-            {
-                var getExcelRowTasks = new List<Task<ExcelRow>>();
-
-                for (var rowIndex = 0; rowIndex < sheet.Count; rowIndex++)
-                {
-                    if (rowIndex == 0 && firstRowHasHeaders) continue;
-                    var row = sheet[rowIndex];
-                    getExcelRowTasks.Add(GetExcelRow(row));
-                }
-
-                var excelSheet = new ExcelSheet(await Task.WhenAll(getExcelRowTasks.ToArray()));
-                book.Add(excelSheet);
-            }
+                book.Add(
+                    new ExcelSheet(
+                        await Task.WhenAll(sheet.Where((t, rowIndex) => rowIndex != 0 || !firstRowHasHeaders)
+                            .Select(GetExcelRow).ToArray())));
             return book;
         }
 
-        private Task<ExcelRow> GetExcelRow( string[] row)
+        private Task<ExcelRow> GetExcelRow(string[] row)
         {
             return Task.FromResult(new ExcelRow(row.Select((cell, index) => new ExcelCell(index, cell))));
-
         }
     }
 }

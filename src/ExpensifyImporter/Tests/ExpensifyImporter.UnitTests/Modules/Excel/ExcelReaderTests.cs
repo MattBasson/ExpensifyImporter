@@ -31,13 +31,13 @@ namespace ExpensifyImporter.UnitTests.Modules.Excel
         }
 
         [Fact]
-        public void Reading_Excel_File_Yields_Results()
+        public async Task Reading_Excel_File_Yields_Results()
         {
             //Arrange
             var path = $"{Environment.CurrentDirectory}\\Modules\\Excel\\Data\\TestExcel.xlsx";
             var excelReader = new ExcelReader(Substitute.For<ILogger<ExcelReader>>());
 
-            var excelResponse = excelReader.ReadAsJson(path);
+            var excelResponse = await excelReader.ReadAsJsonAsync(path);
 
             excelResponse.Should().Contain("Matt");
             excelResponse.Should().Contain("Tess");
@@ -56,10 +56,10 @@ namespace ExpensifyImporter.UnitTests.Modules.Excel
 
             var expectedResponseDEserialised = new List<List<string[]>>();
             expectedResponseDEserialised.Add(new List<string[]>() {
-                new string[] { "Id", "Name","Salary"},
-                new string[] { "8BC78143-9FD5-45E4-AEED-F5648D58473C", "Matt","1000"},
-                new string[] { "46C6F115-B719-48BF-8EE1-3ABF480DF748", "Tess","1200"},
-                new string[] { "5088AB6B-CFCE-4531-BDFE-1E79CCAA7A3D", "Barry","1300"}
+                new[] { "Id", "Name","Salary"},
+                new[] { "8BC78143-9FD5-45E4-AEED-F5648D58473C", "Matt","1000"},
+                new[] { "46C6F115-B719-48BF-8EE1-3ABF480DF748", "Tess","1200"},
+                new[] { "5088AB6B-CFCE-4531-BDFE-1E79CCAA7A3D", "Barry","1300"}
             });
 
 
