@@ -16,7 +16,7 @@ namespace ExpensifyImporter.Library.Modules.Expensify
         }
 
 
-        public async Task<List<Expense>> MapExpensesAsync(List<ExcelSheet> excelBook, bool firstRowHasHeaders = true)
+        public async Task<List<Expense>> MapExpensesAsync(List<ExcelSheet> excelBook)
         {
             var expenses = new List<Expense>();
 
@@ -24,8 +24,7 @@ namespace ExpensifyImporter.Library.Modules.Expensify
             {
                 expenses.AddRange(
                     await Task.WhenAll(
-                        excelSheet.Where((t, excelRowIndex) => excelRowIndex != 0 || !firstRowHasHeaders)
-                            .Select(GetExpense).ToArray()));
+                        excelSheet.Select(GetExpense).ToArray()));
             }
 
             return expenses;

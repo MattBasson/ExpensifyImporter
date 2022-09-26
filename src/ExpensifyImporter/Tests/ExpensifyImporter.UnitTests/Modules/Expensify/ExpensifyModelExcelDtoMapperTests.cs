@@ -20,15 +20,6 @@ public class ExpensifyModelExcelDtoMapperTests
             {
                 new ExcelRow
                 {
-                    new(0, "TimeStamp"),
-                    new(1, "Merchant"),
-                    new(2, "Amount"),
-                    new(3, "Category"),
-                    new(4, "Description"),
-                    new(5, "ReceiptUrl")
-                },
-                new ExcelRow
-                {
                     new(0, "2017-04-01 12:00:00"),
                     new(1, "Costa"),
                     new(2, "11.1"),

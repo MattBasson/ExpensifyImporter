@@ -13,6 +13,7 @@ using ExpensifyImporter.Library.Modules.Flags.Domain;
 using ExpensifyImporter.Library.Modules.IO;
 using ExpensifyImporter.Application;
 using ExpensifyImporter.Library.Modules.Excel;
+using ExpensifyImporter.Library.Modules.Expensify;
 
 var flagFactory = new FlagFactory(args);
 
@@ -50,7 +51,6 @@ if(flags.Any(a=>a.Flag == FlagType.Directory))
             IConfiguration configuration = hostContext.Configuration;
 
             //Configure services here...
-            
 
             services.AddDbContext<ExpensifyContext>((provider, options) =>
             {   
@@ -70,7 +70,9 @@ if(flags.Any(a=>a.Flag == FlagType.Directory))
                     builder.CommandTimeout(60);
                 });
             });
-            services.AddTransient<ExcelReader>();
+            services.AddScoped<ExcelReader>();
+            services.AddScoped<ExcelDtoMapper>();
+            services.AddScoped<ExpensifyModelExcelDtoMapper>();
             services.AddTransient(x => new ExcelFileWatcher(x.GetRequiredService<ILogger<ExcelFileWatcher>>(), fileWatchPath));
             services.AddHostedService<Worker>();
 
