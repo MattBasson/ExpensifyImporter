@@ -11,8 +11,6 @@ namespace ExpensifyImporter.Database.Domain
         [Column("id")]
         public Guid Id { get; set; }
 
-        [Column("expense_id")]
-        public int ExpenseId { get; set; }       
 
         [Column("transaction_datetime")]
         public DateTime TransactionDateTime { get; set; }

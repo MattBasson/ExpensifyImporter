@@ -29,6 +29,7 @@ namespace ExpensifyImporter.Library.Modules.Excel
 
                 if (worksheetParts == null) return await Task.FromResult(JsonSerializer.Serialize(workSheetList));
 
+                //Needed for fetching the string values by id, usually stored in innertext property.
                 var sharedStringTable = excelDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
 
                 workSheetList.AddRange(
