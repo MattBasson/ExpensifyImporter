@@ -134,6 +134,8 @@ public class ExcelToDatabaseSequencerTests
         dbResponse.Should().Be(9);
         dbContext.Expense.Count().Should().Be(9);
         dbContext.Expense.Should().BeEquivalentTo(expectedExpenseList,opt => opt.Excluding(e =>e.Id).Excluding(e=>e.CompanyId));
-        
+        dbContext.Expense.Select(s=>s.Id).Should().NotContain(Guid.Empty);
+        dbContext.Expense.Select(s => s.CompanyId).Should().NotContain(0);
+
     }
 }
