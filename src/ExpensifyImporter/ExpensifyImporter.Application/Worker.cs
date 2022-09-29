@@ -12,26 +12,24 @@ namespace ExpensifyImporter.Application
     {
         private readonly ILogger<Worker> _logger;
         private readonly WorkerConfiguration _workerConfiguration;
-        private readonly FeatureConfiguration _featureConfiguration;
-        private readonly ExcelFileWatcher _excelFileWatcher;
+        private readonly FeatureFlagsConfiguration _featureConfiguration;
         private readonly ExcelToDatabaseSequencer _excelSequencer;
         private readonly DirectoryInfo _directoryInfo;
 
         public Worker(
             ILogger<Worker> logger,
             IOptions<WorkerConfiguration> workerConfiguration,
-            IOptions<FeatureConfiguration> featureConfiguration,
+            IOptions<FeatureFlagsConfiguration> featureConfiguration,
             ExcelFileWatcher excelFileWatcher,
             ExcelToDatabaseSequencer excelSequencer)
         {
             _logger = logger;
             _workerConfiguration = workerConfiguration.Value;
             _featureConfiguration = featureConfiguration.Value;
-            _excelFileWatcher = excelFileWatcher;
             _excelSequencer = excelSequencer;
             if (_featureConfiguration.WatchDirectory)
             {
-                _excelFileWatcher.Created += _excelFileWatcher_Created;
+                excelFileWatcher.Created += _excelFileWatcher_Created;
             }            
             _directoryInfo = new DirectoryInfo(excelFileWatcher.Path);
         }
