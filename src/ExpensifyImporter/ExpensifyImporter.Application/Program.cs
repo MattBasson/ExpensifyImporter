@@ -64,6 +64,9 @@ var builder = Host.CreateDefaultBuilder(args)
             var config = configuration.GetSection("Worker");
             model.Interval = config.GetValue<int>("Interval");
             model.DataDirectory = config.GetValue<string>("DataDirectory");
+            //set via user secret.
+            model.ExpensifyAuthToken = config.GetValue<string>("ExpensifyAuthToken");
+
         });
 
         services.Configure<FeatureFlagsConfiguration>(model =>
