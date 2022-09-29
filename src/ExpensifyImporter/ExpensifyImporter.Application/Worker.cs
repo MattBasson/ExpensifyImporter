@@ -1,26 +1,38 @@
-﻿using ExpensifyImporter.Library.Modules.IO;
+﻿using ExpensifyImporter.Library.Domain;
+using ExpensifyImporter.Library.Modules.IO;
 using ExpensifyImporter.Library.Modules.Sequencing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace ExpensifyImporter.Application
 {
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
+        private readonly WorkerConfiguration _workerConfiguration;
+        private readonly FeatureConfiguration _featureConfiguration;
         private readonly ExcelFileWatcher _excelFileWatcher;
         private readonly ExcelToDatabaseSequencer _excelSequencer;
         private readonly DirectoryInfo _directoryInfo;
 
         public Worker(
             ILogger<Worker> logger,
+            IOptions<WorkerConfiguration> workerConfiguration,
+            IOptions<FeatureConfiguration> featureConfiguration,
             ExcelFileWatcher excelFileWatcher,
             ExcelToDatabaseSequencer excelSequencer)
         {
             _logger = logger;
+            _workerConfiguration = workerConfiguration.Value;
+            _featureConfiguration = featureConfiguration.Value;
             _excelFileWatcher = excelFileWatcher;
             _excelSequencer = excelSequencer;
-            _excelFileWatcher.Created += _excelFileWatcher_Created;
+            if (_featureConfiguration.WatchDirectory)
+            {
+                _excelFileWatcher.Created += _excelFileWatcher_Created;
+            }            
             _directoryInfo = new DirectoryInfo(excelFileWatcher.Path);
         }
 
@@ -35,9 +47,14 @@ namespace ExpensifyImporter.Application
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
-                await ProcessExcelFilesInPath();                
+                if (_featureConfiguration.PollDirectory)
+                {
+                    _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                    await ProcessExcelFilesInPath();
+                }
+                
 
-                await Task.Delay(60000, stoppingToken);
+                await Task.Delay(_workerConfiguration.Interval, stoppingToken);
             }
         }
 

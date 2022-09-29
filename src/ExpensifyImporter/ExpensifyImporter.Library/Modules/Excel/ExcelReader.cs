@@ -31,7 +31,6 @@ namespace ExpensifyImporter.Library.Modules.Excel
 
                 //Needed for fetching the string values by id, usually stored in innertext property.
                 var sharedStringTable = excelDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
-
                 workSheetList.AddRange(
                     await Task.WhenAll(
                         worksheetParts.Select(worksheetPart =>

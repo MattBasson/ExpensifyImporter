@@ -8,14 +8,12 @@
 
   <ItemGroup>
     <None Remove="Content\HelpContent.txt" />
-    <None Remove="Domain\**" />
     <None Remove="Modules\ExcelReader\**" />
     <None Remove="Modules\Expensify\Domain\**" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Content\Flags\HelpContent.txt" />
-    <EmbeddedResource Remove="Domain\**" />
     <EmbeddedResource Remove="Modules\ExcelReader\**" />
     <EmbeddedResource Remove="Modules\Expensify\Domain\**" />
   </ItemGroup>
@@ -29,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Domain\**" />
     <Compile Remove="Modules\ExcelReader\**" />
     <Compile Remove="Modules\Expensify\Domain\**" />
   </ItemGroup>

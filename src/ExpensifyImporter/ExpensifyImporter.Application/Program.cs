@@ -11,10 +11,11 @@ using ExpensifyImporter.Database;
 using ExpensifyImporter.Library.Modules.Flags;
 using ExpensifyImporter.Library.Modules.Flags.Domain;
 using ExpensifyImporter.Library.Modules.IO;
-using ExpensifyImporter.Application;
+using ExpensifyImporter.Application;    
 using ExpensifyImporter.Library.Modules.Excel;
 using ExpensifyImporter.Library.Modules.Expensify;
 using ExpensifyImporter.Library.Modules.Sequencing;
+using ExpensifyImporter.Library.Domain;
 
 var flagFactory = new FlagFactory(args);
 
@@ -79,6 +80,21 @@ if(flags.Any(a=>a.Flag == FlagType.Directory))
                 fileWatchPath));
             services.AddScoped<ExcelToDatabaseSequencer>();
             services.AddHostedService<Worker>();
+
+            //Configuration 
+
+            services.Configure<WorkerConfiguration>(model => {
+
+                var config = configuration.GetSection("Worker");
+                model.Interval = config.GetValue<int>("Interval");
+            });
+
+            services.Configure<FeatureConfiguration>(model => {
+
+                var config = configuration.GetSection("Feature");
+                model.WatchDirectory = config.GetValue<bool>("WatchDirectory");
+                model.PollDirectory = config.GetValue<bool>("PollDirectory");
+            });
         });
 
     using IHost host = builder.Build();
