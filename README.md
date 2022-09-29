@@ -126,10 +126,16 @@ For  this feature I will be using what has been documented [here](https://docs.m
 The parameters for which will be passed in through args at startup.
 
 
+### Polling for file changes
+---
+Feature for checking the directory on a periodic basis and processing all documents
+
+
+
 ### Reading Excel data
 ---
 For reading Excel data, I want to take advantage of the OpenXml standard and the nuget package OpenXml to acheive reading
-the excel files read in by the file watcher.
+the excel files read in by the file watcher and poller.
 
 
 ### Downloading Imagery
@@ -144,4 +150,10 @@ Once all expense data is save including images, it gives me scope to create a li
 #### Model
 
 I wish to follow a code first approach to creating a model. 
+
+
+#### Store in the cloud.
+
+This will eventually be store in a datastore in the cloud, so it can be used for future projects.
+
 
