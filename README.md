@@ -155,5 +155,3 @@ I wish to follow a code first approach to creating a model.
 #### Store in the cloud.
 
 This will eventually be store in a datastore in the cloud, so it can be used for future projects.
-
-
