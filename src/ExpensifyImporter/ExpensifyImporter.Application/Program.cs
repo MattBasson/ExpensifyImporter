@@ -40,7 +40,7 @@ var builder = Host.CreateDefaultBuilder(args)
                 Server = configuration["MySql:Server"],
                 Port = configuration.GetValue<uint>("MySql:Port"),
                 Database = configuration["MySql:Database"],
-                //Set with user secrets (for now)
+                //Set with user secrets
                 UserID = configuration["MySql:User"],
                 Password = configuration["MySql:Password"],
                 ConnectionTimeout = 3000
