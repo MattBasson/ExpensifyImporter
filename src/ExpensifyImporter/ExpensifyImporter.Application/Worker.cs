@@ -40,7 +40,7 @@ namespace ExpensifyImporter.Application
         private void _excelFileWatcher_Created(object sender, FileSystemEventArgs e)
         {
             Task.Run(async () => await ProcessExcelFile(e.FullPath));
-         }
+        }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
