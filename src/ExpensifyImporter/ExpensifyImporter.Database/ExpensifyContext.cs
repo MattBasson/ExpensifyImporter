@@ -17,7 +17,6 @@ namespace ExpensifyImporter.Database
         {
 
         }
-       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,7 +31,7 @@ namespace ExpensifyImporter.Database
 
                 entity.Property(e => e.Id).IsRequired().ValueGeneratedOnAdd();
                 entity.Property(e => e.ReceiptId).IsRequired();
-                entity.Property(e => e.Merchant).HasColumnType("nvarchar(1000)");                
+                entity.Property(e => e.Merchant).HasColumnType("nvarchar(1000)");
                 entity.Property(e => e.Category).HasColumnType("nvarchar(1000)");
                 entity.Property(e => e.ReceiptImage).HasColumnType("MEDIUMBLOB");
                 entity.Property(e => e.CompanyId).HasDefaultValue(1);
