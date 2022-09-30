@@ -1,10 +1,7 @@
 {
   "profiles": {
     "ExpensifyImporter.Application": {
-      "commandName": "Project",
-      //"commandLineArgs": "--path C:\\Dev\\Tools\\ImporterLocation --option fafa"
-      // "commandLineArgs": "--help",
-       "commandLineArgs": "--directory C:\\Dev\\Tools\\ImporterLocation"
+      "commandName": "Project"
     }
   }
 }

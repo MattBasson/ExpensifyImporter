@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Content\Flags\HelpContent.txt" />
     <EmbeddedResource Remove="Modules\ExcelReader\**" />
     <EmbeddedResource Remove="Modules\Expensify\Domain\**" />
   </ItemGroup>
@@ -29,6 +28,10 @@
   <ItemGroup>
     <Compile Remove="Modules\ExcelReader\**" />
     <Compile Remove="Modules\Expensify\Domain\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Content" />
   </ItemGroup>
 
  

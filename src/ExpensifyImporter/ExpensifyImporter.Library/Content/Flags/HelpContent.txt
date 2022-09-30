@@ -1,9 +1,0 @@
-﻿Expensify Importer (1.0.0)
-
-Usage: ExpensifyImporter.Application.exe [runtime-options] [arguments]
-
-Execute the ExpensifyImporter Application.
-
-runtime-options:
-  -d|--directory <path>     Path where the Excel files will be located.
-  -h|--help	            Show command line help. 
