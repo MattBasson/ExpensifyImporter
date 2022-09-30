@@ -12,18 +12,7 @@ namespace ExpensifyImporter.UnitTests.Modules.IO
     public class EmbeddedDataTests
     {
 
-        [Fact]
-        public void Getting_Embedded_Data_Yields_Correct_File_And_Content()
-        {
-            //Arrange
-            //Act
-            var fileContent = EmbeddedData.Get("ExpensifyImporter.Library.Content.Flags.HelpContent.txt");
-
-            //Assert
-            fileContent.Should().NotBeNull();
-            fileContent.Should().Contain("Execute the ExpensifyImporter Application.");
-
-        }
+        
 
         [Fact]
         public void Getting_Embedded_Data_Yields_Correct_File_And_Content_With_Declared_Assembly()
