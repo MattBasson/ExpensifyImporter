@@ -11,6 +11,10 @@ namespace ExpensifyImporter.Database.Domain
         [Column("id")]
         public Guid Id { get; set; }
 
+        
+        [Column("receipt_id")]
+        public int ReceiptId { get; set; }
+
 
         [Column("transaction_datetime")]
         public DateTime TransactionDateTime { get; set; }

@@ -15,6 +15,8 @@ public static class SQLiteHelper
 
         var options = new DbContextOptionsBuilder<ExpensifyContext>();
         options.UseSqlite(connection);
+        options.EnableSensitiveDataLogging();
+        options.EnableDetailedErrors();
 
         var dbContext = new ExpensifyContext(options.Options);
         dbContext.Database.EnsureCreated();

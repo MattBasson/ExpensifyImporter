@@ -20,35 +20,39 @@ public class ExpensifyModelExcelDtoMapperTests
             {
                 new ExcelRow
                 {
-                    new(0, "2017-04-01 12:00:00"),
-                    new(1, "Costa"),
-                    new(2, "11.1"),
-                    new(3, "Meals"),                    
-                    new(4, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef131.jpg")
+                    new(0, "1"),
+                    new(1, "2017-04-01 12:00:00"),
+                    new(2, "Costa"),
+                    new(3, "11.1"),
+                    new(4, "Meals"),                    
+                    new(5, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef131.jpg")
                 },
                 new ExcelRow
                 {
-                    new(0, "2017-04-02 12:00:00"),
-                    new(1, "Mcdonalds"),
-                    new(2, "12.2"),
-                    new(3, "Meals"),
-                    new(4, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef132.jpg")
+                    new(0, "2"),
+                    new(1, "2017-04-02 12:00:00"),
+                    new(2, "Mcdonalds"),
+                    new(3, "12.2"),
+                    new(4, "Meals"),
+                    new(5, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef132.jpg")
                 },
                 new ExcelRow
                 {
-                    new(0, "2017-04-03 12:00:00"),
-                    new(1, "Eat"),
-                    new(2, "13.3"),
-                    new(3, "Meals"),                    
-                    new(4, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef133.jpg")
+                    new(0, "3"),
+                    new(1, "2017-04-03 12:00:00"),
+                    new(2, "Eat"),
+                    new(3, "13.3"),
+                    new(4, "Meals"),                    
+                    new(5, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef133.jpg")
                 },
                 new ExcelRow
                 {
-                    new(0, "2017-04-04 12:00:00"),
-                    new(1, "Wasabi"),
-                    new(2, "14.4"),
-                    new(3, "Meals"),                    
-                    new(4, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef134.jpg")
+                    new(0, "4"),
+                    new(1, "2017-04-04 12:00:00"),
+                    new(2, "Wasabi"),
+                    new(3, "14.4"),
+                    new(4, "Meals"),                    
+                    new(5, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef134.jpg")
                 }
             }
         };
@@ -59,6 +63,7 @@ public class ExpensifyModelExcelDtoMapperTests
         {
             new()
             {
+                ReceiptId = 1,
                 TransactionDateTime = DateTime.ParseExact("2017-04-01 12:00:00", "yyyy-MM-dd HH:mm:ss",
                     CultureInfo.InvariantCulture),
                 Merchant = "Costa",
@@ -68,6 +73,7 @@ public class ExpensifyModelExcelDtoMapperTests
             },
             new()
             {
+                ReceiptId = 2,
                 TransactionDateTime = DateTime.ParseExact("2017-04-02 12:00:00", "yyyy-MM-dd HH:mm:ss",
                     CultureInfo.InvariantCulture),
                 Merchant = "Mcdonalds",
@@ -77,6 +83,7 @@ public class ExpensifyModelExcelDtoMapperTests
             },
             new()
             {
+                ReceiptId = 3,
                 TransactionDateTime = DateTime.ParseExact("2017-04-03 12:00:00", "yyyy-MM-dd HH:mm:ss",
                     CultureInfo.InvariantCulture),
                 Merchant = "Eat",
@@ -86,6 +93,7 @@ public class ExpensifyModelExcelDtoMapperTests
             },
             new()
             {
+                ReceiptId = 4,
                 TransactionDateTime = DateTime.ParseExact("2017-04-04 12:00:00", "yyyy-MM-dd HH:mm:ss",
                     CultureInfo.InvariantCulture),
                 Merchant = "Wasabi",

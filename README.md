@@ -25,6 +25,8 @@ For the sake of getting the right report data I found the following by "*tullywo
 >1) From the Expenses Section in the App; select a receipt (doesnt matter which at this point)
 >2) In the top right of the UI select Export To and select 'create new CSV layout'
 >3) In the new layout, customize as desired, created a new column with the Formula: `{expense:receipt:url:direct}` then Save Export Format
+>4) To get the expense id use this `{expense:id}`
+>5) To get the Receipt id use this `{expense:receipt:id}`
 
 
 Once you have the report created you can generate a report from your expensify dashboard and your relevant filters and the export will include

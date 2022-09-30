@@ -28,8 +28,10 @@ namespace ExpensifyImporter.Database
             modelBuilder.Entity<Expense>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                entity.HasAlternateKey(e => e.ReceiptId);
 
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.Property(e => e.Id).IsRequired().ValueGeneratedOnAdd();
+                entity.Property(e => e.ReceiptId).IsRequired();
                 entity.Property(e => e.Merchant).HasColumnType("nvarchar(1000)");                
                 entity.Property(e => e.Category).HasColumnType("nvarchar(1000)");
                 entity.Property(e => e.ReceiptImage).HasColumnType("MEDIUMBLOB");

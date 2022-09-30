@@ -34,12 +34,13 @@ namespace ExpensifyImporter.Library.Modules.Expensify
         {
             return Task.FromResult(new Expense()
             {
-                TransactionDateTime = DateTime.ParseExact(excelRow[0]?.CellValue ?? string.Empty,
+                ReceiptId = int.Parse(excelRow[0]?.CellValue ?? "0"),
+                TransactionDateTime = DateTime.ParseExact(excelRow[1]?.CellValue ?? string.Empty,
                     "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
-                Merchant = excelRow[1]?.CellValue,
-                Amount = decimal.Parse(excelRow[2]?.CellValue ?? "0",NumberStyles.Currency),
-                Category = excelRow[3]?.CellValue,                
-                ReceiptUrl = excelRow[4]?.CellValue
+                Merchant = excelRow[2]?.CellValue,
+                Amount = decimal.Parse(excelRow[3]?.CellValue ?? "0",NumberStyles.Currency),
+                Category = excelRow[4]?.CellValue,                
+                ReceiptUrl = excelRow[5]?.CellValue
             });
         }
     }
