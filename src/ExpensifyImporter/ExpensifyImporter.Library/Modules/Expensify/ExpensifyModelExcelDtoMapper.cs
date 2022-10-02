@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Globalization;
+using DocumentFormat.OpenXml.Spreadsheet;
 using ExpensifyImporter.Database.Domain;
 using ExpensifyImporter.Library.Modules.Excel.Domain;
 using Microsoft.Extensions.Logging;
@@ -20,28 +21,35 @@ namespace ExpensifyImporter.Library.Modules.Expensify
         {
             var expenses = new List<Expense>();
 
+            var tasks = new List<Task<List<Expense>>>();
             foreach (var excelSheet in excelBook)
             {
-                expenses.AddRange(
-                    await Task.WhenAll(
-                        excelSheet.Select(GetExpense).ToArray()));
+                tasks.Add(Task.Run(() =>
+                {
+                    return excelSheet.Select(selector: GetExpense).ToList();
+                }));
+                
             }
-
+            var result = await Task.WhenAll(tasks.ToArray());            
+            foreach (var expenseSheet in result)
+            {
+                expenses.AddRange(expenseSheet);
+            }
             return expenses;
         }
 
-        private Task<Expense> GetExpense(ExcelRow excelRow)
+        private Expense GetExpense(ExcelRow excelRow)
         {
-            return Task.FromResult(new Expense()
+            return new Expense()
             {
-                ReceiptId = int.Parse(excelRow[0]?.CellValue ?? "0"),
-                TransactionDateTime = DateTime.ParseExact(excelRow[1]?.CellValue ?? string.Empty,
+                ReceiptId = int.Parse(excelRow["A"]?.CellValue ?? "0"),
+                TransactionDateTime = DateTime.ParseExact(excelRow["B"]?.CellValue ?? string.Empty,
                     "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
-                Merchant = excelRow[2]?.CellValue,
-                Amount = decimal.Parse(excelRow[3]?.CellValue ?? "0",NumberStyles.Currency),
-                Category = excelRow[4]?.CellValue,                
-                ReceiptUrl = excelRow[5]?.CellValue
-            });
+                Merchant = excelRow["C"]?.CellValue,
+                Amount = decimal.Parse(excelRow["D"]?.CellValue ?? "0",NumberStyles.Currency),
+                Category = excelRow["E"]?.CellValue,                
+                ReceiptUrl = excelRow["F"]?.CellValue
+            };
         }
     }
 }

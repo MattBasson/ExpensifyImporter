@@ -20,39 +20,39 @@ public class ExpensifyModelExcelDtoMapperTests
             {
                 new ExcelRow
                 {
-                    new(0, "1"),
-                    new(1, "2017-04-01 12:00:00"),
-                    new(2, "Costa"),
-                    new(3, "11.1"),
-                    new(4, "Meals"),                    
-                    new(5, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef131.jpg")
+                    new( "1","A1","A"),
+                    new( "2017-04-01 12:00:00","B1","B"),
+                    new( "Costa","C1","C"),
+                    new( "11.1","D1","D"),
+                    new( "Meals","E1","E"),                    
+                    new( "https://www.expensify.com/receipts/w_8c12334126141c5a124ef131.jpg", "F1", "F")
                 },
                 new ExcelRow
                 {
-                    new(0, "2"),
-                    new(1, "2017-04-02 12:00:00"),
-                    new(2, "Mcdonalds"),
-                    new(3, "12.2"),
-                    new(4, "Meals"),
-                    new(5, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef132.jpg")
+                    new( "2", "A2", "A"),
+                    new( "2017-04-02 12:00:00","B2","B"),
+                    new( "Mcdonalds", "C2","C"),
+                    new( "12.2", "D2","D"),
+                    new( "Meals", "E2", "E"),
+                    new( "https://www.expensify.com/receipts/w_8c12334126141c5a124ef132.jpg", "F2", "F")
                 },
                 new ExcelRow
                 {
-                    new(0, "3"),
-                    new(1, "2017-04-03 12:00:00"),
-                    new(2, "Eat"),
-                    new(3, "13.3"),
-                    new(4, "Meals"),                    
-                    new(5, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef133.jpg")
+                    new( "3", "A3", "A"),
+                    new( "2017-04-03 12:00:00", "B3", "B"),
+                    new( "Eat", "C3", "C"),
+                    new( "13.3", "D3", "D"),
+                    new( "Meals", "E3", "E"),                    
+                    new( "https://www.expensify.com/receipts/w_8c12334126141c5a124ef133.jpg", "F3", "F")
                 },
                 new ExcelRow
                 {
-                    new(0, "4"),
-                    new(1, "2017-04-04 12:00:00"),
-                    new(2, "Wasabi"),
-                    new(3, "14.4"),
-                    new(4, "Meals"),                    
-                    new(5, "https://www.expensify.com/receipts/w_8c12334126141c5a124ef134.jpg")
+                    new( "4", "A4", "A"),
+                    new( "2017-04-04 12:00:00", "B4", "B"),
+                    new( "Wasabi","C4","C"),
+                    new( "14.4","D4", "D"),
+                    new( "Meals", "E4", "E"),                    
+                    new( "https://www.expensify.com/receipts/w_8c12334126141c5a124ef134.jpg", "F4", "F")
                 }
             }
         };

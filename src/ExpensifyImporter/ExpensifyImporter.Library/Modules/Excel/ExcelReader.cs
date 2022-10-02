@@ -17,7 +17,7 @@ namespace ExpensifyImporter.Library.Modules.Excel
 
         public async Task<string> ReadAsJsonAsync(string path)
         {
-            var workSheetList = new List<List<string[]>>();
+            var workSheetList = new List<List<string[][]>>();
             try
             {
                 //Lets open the existing excel file and read through its content . Open the excel using openxml sdk
@@ -47,15 +47,32 @@ namespace ExpensifyImporter.Library.Modules.Excel
             }
         }
 
-        private Task<List<string?[]>> GetPopulatedRowArrays(List<Row> rows, SharedStringTable sharedStringTable)
+        private Task<List<string?[][]>> GetPopulatedRowArrays(List<Row> rows, SharedStringTable sharedStringTable)
         {
             return Task.FromResult(
                 (from row in rows
                     select row.Elements<Cell>().Select(cell =>
-                            sharedStringTable != null ? GetExcelCellValue(cell, sharedStringTable) : null)
+                            sharedStringTable != null ? GetExcelCellValues(cell, sharedStringTable) : GetExcelCellValues(cell))
                         .ToArray())
                 .ToList()
             );
+        }
+
+        private string[] GetExcelCellValues(Cell cell,SharedStringTable sharedStringTable = null)
+        {
+            if(sharedStringTable == null)
+            {
+                return new List<string>()
+                {
+                    cell.CellReference.Value,
+                    cell.InnerText
+                }.ToArray();
+            }
+            return new List<string>()
+            {
+                cell.CellReference.Value,
+                GetExcelCellValue(cell, sharedStringTable)
+            }.ToArray();
         }
 
         private string? GetExcelCellValue(Cell cell, SharedStringTable sharedStringTable)
@@ -78,5 +95,10 @@ namespace ExpensifyImporter.Library.Modules.Excel
 
             return null;
         }
+
+        //private string GetColumnRef(Cell cell)
+        //{
+        //    // cell.OuterXml
+        //}
     }
 }

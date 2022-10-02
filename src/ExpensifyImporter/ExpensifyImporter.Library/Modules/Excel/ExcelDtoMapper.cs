@@ -16,7 +16,7 @@ namespace ExpensifyImporter.Library.Modules.Excel
 
         public async Task<List<ExcelSheet>> DeserializeAsync(string excelJson, bool firstRowHasHeaders = true)
         {
-            var excelResponseDeserialized = JsonSerializer.Deserialize<IEnumerable<List<string[]>>>(excelJson);
+            var excelResponseDeserialized = JsonSerializer.Deserialize<IEnumerable<List<string[][]>>>(excelJson);
             var book = new List<ExcelSheet>();
             if (excelResponseDeserialized == null) return book;
             foreach (var sheet in excelResponseDeserialized)
@@ -27,9 +27,9 @@ namespace ExpensifyImporter.Library.Modules.Excel
             return book;
         }
 
-        private Task<ExcelRow> GetExcelRow(string[] row)
+        private Task<ExcelRow> GetExcelRow(string[][] row)
         {
-            return Task.FromResult(new ExcelRow(row.Select((cell, index) => new ExcelCell(index, cell))));
+            return Task.FromResult(new ExcelRow(row.Select((cell) => new ExcelCell( cell[1], cell[0], cell[0][..1]))));
         }
     }
 }

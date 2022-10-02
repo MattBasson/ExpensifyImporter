@@ -19,7 +19,7 @@ namespace ExpensifyImporter.Library.Modules.Sequencing
             ExcelDtoMapper excelDtoMapper,
             ExpensifyModelExcelDtoMapper expensifyModelExcelDtoMapper)
         {
-            _logger = logger;
+            _logger = logger; 
             _dbContext = dbContext;
             _excelReader = excelReader;
             _excelDtoMapper = excelDtoMapper;
