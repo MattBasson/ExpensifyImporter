@@ -16,7 +16,7 @@ namespace ExpensifyImporter.Library.Modules.Database
             _dbContext = dbContext;
         }
 
-        public async Task<List<Expense>> Filter(IEnumerable<Expense> expenses)
+        public async Task<List<Expense>> FilterAsync(IEnumerable<Expense> expenses)
         {
             var currentExpenses = await _dbContext.Expense.Select(s=>s.ReceiptId).ToListAsync();
         

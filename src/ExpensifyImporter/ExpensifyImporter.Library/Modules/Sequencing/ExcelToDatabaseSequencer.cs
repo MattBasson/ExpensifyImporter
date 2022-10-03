@@ -47,7 +47,7 @@ namespace ExpensifyImporter.Library.Modules.Sequencing
 
             // 4) Filters out duplicates.
             _logger.LogInformation("Filter out duplicates {ExpensesCount} items", expenses.Count);
-            var filteredExpenses = await _expenseDuplicates.Filter(expenses);
+            var filteredExpenses = await _expenseDuplicates.FilterAsync(expenses);
 
             // 5) Will save the expense model collection to the database.
             if (filteredExpenses.Any())

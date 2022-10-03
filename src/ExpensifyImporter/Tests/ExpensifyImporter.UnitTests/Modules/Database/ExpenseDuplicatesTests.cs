@@ -122,7 +122,7 @@ namespace ExpensifyImporter.UnitTests.Modules.Database
             );
 
             //Act 
-            var response = await expenseDuplicateFilter.Filter(_expenseList);
+            var response = await expenseDuplicateFilter.FilterAsync(_expenseList);
 
             //Assert
 
@@ -146,7 +146,7 @@ namespace ExpensifyImporter.UnitTests.Modules.Database
             );
 
             //Act 
-            var response = await expenseDuplicateFilter.Filter(newExpenses);
+            var response = await expenseDuplicateFilter.FilterAsync(newExpenses);
 
             //Assert
             response.Count.Should().Be(5);
@@ -167,7 +167,7 @@ namespace ExpensifyImporter.UnitTests.Modules.Database
             );
 
             //Act 
-            var response = await expenseDuplicateFilter.Filter(_expenseList);
+            var response = await expenseDuplicateFilter.FilterAsync(_expenseList);
 
             //Assert
             response.Should().NotBeEmpty();
