@@ -7,11 +7,11 @@ using NSubstitute;
 
 namespace ExpensifyImporter.UnitTests.Modules.Database
 {
-    public class ExpenseDuplicatesFilterTests
+    public class ExpenseDuplicatesTests
     {
         private readonly List<Expense> _expenseList;
 
-        public ExpenseDuplicatesFilterTests()
+        public ExpenseDuplicatesTests()
         {
             _expenseList = new List<Expense>
             {
@@ -116,8 +116,8 @@ namespace ExpensifyImporter.UnitTests.Modules.Database
             await dbContext.Expense.AddRangeAsync(_expenseList);
             await dbContext.SaveChangesAsync();
 
-            var expenseDuplicateFilter = new ExpenseDuplicatesFilter(
-                Substitute.For<ILogger<ExpenseDuplicatesFilter>>(),
+            var expenseDuplicateFilter = new ExpenseDuplicates(
+                Substitute.For<ILogger<ExpenseDuplicates>>(),
                 dbContext
             );
 
@@ -140,8 +140,8 @@ namespace ExpensifyImporter.UnitTests.Modules.Database
             await dbContext.Expense.AddRangeAsync(existingExpenses);
             await dbContext.SaveChangesAsync();
 
-            var expenseDuplicateFilter = new ExpenseDuplicatesFilter(
-                Substitute.For<ILogger<ExpenseDuplicatesFilter>>(),
+            var expenseDuplicateFilter = new ExpenseDuplicates(
+                Substitute.For<ILogger<ExpenseDuplicates>>(),
                 dbContext
             );
 
@@ -161,8 +161,8 @@ namespace ExpensifyImporter.UnitTests.Modules.Database
             //Arrange
             var dbContext = SQLiteHelper.CreateSqliteContext();
 
-            var expenseDuplicateFilter = new ExpenseDuplicatesFilter(
-                Substitute.For<ILogger<ExpenseDuplicatesFilter>>(),
+            var expenseDuplicateFilter = new ExpenseDuplicates(
+                Substitute.For<ILogger<ExpenseDuplicates>>(),
                 dbContext
             );
 

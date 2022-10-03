@@ -55,7 +55,7 @@ var builder = Host.CreateDefaultBuilder(args)
         services.AddTransient(x => new ExcelFileWatcher(
             x.GetRequiredService<ILogger<ExcelFileWatcher>>(),
             fileWatchPath));
-        services.AddScoped<ExpenseDuplicatesFilter>();
+        services.AddScoped<ExpenseDuplicates>();
         services.AddScoped<ExcelToDatabaseSequencer>();
         services.AddHostedService<Worker>();
 

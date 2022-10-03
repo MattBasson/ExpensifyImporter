@@ -13,21 +13,21 @@ namespace ExpensifyImporter.Library.Modules.Sequencing
         private readonly ExpensifyContext _dbContext;
         private readonly ExcelReader _excelReader;
         private readonly ExcelDtoMapper _excelDtoMapper;
-        private readonly ExpenseDuplicatesFilter _expenseDuplicatesFilter;
+        private readonly ExpenseDuplicates _expenseDuplicates;
         private readonly ExpensifyModelExcelDtoMapper _expensifyModelExcelDtoMapper;
 
         public ExcelToDatabaseSequencer(ILogger<ExcelToDatabaseSequencer> logger,
             ExpensifyContext dbContext,
             ExcelReader excelReader,
             ExcelDtoMapper excelDtoMapper,
-            ExpenseDuplicatesFilter expenseDuplicatesFilter,
+            ExpenseDuplicates expenseDuplicates,
             ExpensifyModelExcelDtoMapper expensifyModelExcelDtoMapper)
         {
             _logger = logger; 
             _dbContext = dbContext;
             _excelReader = excelReader;
             _excelDtoMapper = excelDtoMapper;
-            _expenseDuplicatesFilter = expenseDuplicatesFilter;
+            _expenseDuplicates = expenseDuplicates;
             _expensifyModelExcelDtoMapper = expensifyModelExcelDtoMapper;
         }
 
@@ -47,7 +47,7 @@ namespace ExpensifyImporter.Library.Modules.Sequencing
 
             // 4) Filters out duplicates.
             _logger.LogInformation("Filter out duplicates {ExpensesCount} items", expenses.Count);
-            var filteredExpenses = await _expenseDuplicatesFilter.Filter(expenses);
+            var filteredExpenses = await _expenseDuplicates.Filter(expenses);
 
             // 5) Will save the expense model collection to the database.
             if (filteredExpenses.Any())

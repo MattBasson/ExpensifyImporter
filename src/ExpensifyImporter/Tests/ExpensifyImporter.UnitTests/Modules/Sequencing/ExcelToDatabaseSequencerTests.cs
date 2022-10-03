@@ -36,7 +36,7 @@ public class ExcelToDatabaseSequencerTests
         var excelDtoMapper = new ExcelDtoMapper(Substitute.For<ILogger<ExcelDtoMapper>>());
         var expensifyMapper = new ExpensifyModelExcelDtoMapper(Substitute.For<ILogger<ExpensifyModelExcelDtoMapper>>());
         var expenseDuplicateFilter =
-            new ExpenseDuplicatesFilter(Substitute.For<ILogger<ExpenseDuplicatesFilter>>(), dbContext);
+            new ExpenseDuplicates(Substitute.For<ILogger<ExpenseDuplicates>>(), dbContext);
         var sequencer = new ExcelToDatabaseSequencer(
             Substitute.For<ILogger<ExcelToDatabaseSequencer>>(),
             dbContext,

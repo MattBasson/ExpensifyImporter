@@ -5,12 +5,12 @@ using Microsoft.Extensions.Logging;
 
 namespace ExpensifyImporter.Library.Modules.Database
 {
-    public class ExpenseDuplicatesFilter
+    public class ExpenseDuplicates
     {
-        private readonly ILogger<ExpenseDuplicatesFilter> _logger;
+        private readonly ILogger<ExpenseDuplicates> _logger;
         private readonly ExpensifyContext _dbContext;
 
-        public ExpenseDuplicatesFilter(ILogger<ExpenseDuplicatesFilter> logger, ExpensifyContext dbContext)
+        public ExpenseDuplicates(ILogger<ExpenseDuplicates> logger, ExpensifyContext dbContext)
         {
             _logger = logger;
             _dbContext = dbContext;
