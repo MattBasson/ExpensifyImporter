@@ -6,6 +6,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using System.Globalization;
+using ExpensifyImporter.Library.Modules.Database;
 
 namespace ExpensifyImporter.UnitTests.Modules.Sequencing;
 
@@ -34,11 +35,14 @@ public class ExcelToDatabaseSequencerTests
         var excelReader = new ExcelReader(Substitute.For<ILogger<ExcelReader>>());
         var excelDtoMapper = new ExcelDtoMapper(Substitute.For<ILogger<ExcelDtoMapper>>());
         var expensifyMapper = new ExpensifyModelExcelDtoMapper(Substitute.For<ILogger<ExpensifyModelExcelDtoMapper>>());
+        var expenseDuplicateFilter =
+            new ExpenseDuplicatesFilter(Substitute.For<ILogger<ExpenseDuplicatesFilter>>(), dbContext);
         var sequencer = new ExcelToDatabaseSequencer(
             Substitute.For<ILogger<ExcelToDatabaseSequencer>>(),
             dbContext,
             excelReader,
             excelDtoMapper,
+            expenseDuplicateFilter,
             expensifyMapper);
 
         var expectedExpenseList = new List<Expense>

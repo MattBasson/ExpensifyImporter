@@ -47,7 +47,7 @@ namespace ExpensifyImporter.Library.Modules.Excel
             }
         }
 
-        private Task<List<string?[][]>> GetPopulatedRowArrays(List<Row> rows, SharedStringTable sharedStringTable)
+        private Task<List<string?[][]>> GetPopulatedRowArrays(List<Row> rows, SharedStringTable? sharedStringTable)
         {
             return Task.FromResult(
                 (from row in rows
@@ -58,7 +58,7 @@ namespace ExpensifyImporter.Library.Modules.Excel
             );
         }
 
-        private string[] GetExcelCellValues(Cell cell,SharedStringTable sharedStringTable = null)
+        private string?[] GetExcelCellValues(Cell cell,SharedStringTable? sharedStringTable = null)
         {
             if(sharedStringTable == null)
             {
@@ -68,14 +68,14 @@ namespace ExpensifyImporter.Library.Modules.Excel
                     cell.InnerText
                 }.ToArray();
             }
-            return new List<string>()
+            return new List<string?>()
             {
-                cell.CellReference.Value,
+                cell.CellReference?.Value,
                 GetExcelCellValue(cell, sharedStringTable)
             }.ToArray();
         }
 
-        private string? GetExcelCellValue(Cell cell, SharedStringTable sharedStringTable)
+        private string? GetExcelCellValue(Cell cell, SharedStringTable? sharedStringTable)
         {
             if (cell.CellValue == null) return cell.InnerText;
             if (cell?.DataType != null && cell.DataType == CellValues.SharedString)
@@ -96,9 +96,5 @@ namespace ExpensifyImporter.Library.Modules.Excel
             return null;
         }
 
-        //private string GetColumnRef(Cell cell)
-        //{
-        //    // cell.OuterXml
-        //}
     }
 }

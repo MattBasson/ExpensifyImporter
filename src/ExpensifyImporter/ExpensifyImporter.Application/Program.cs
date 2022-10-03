@@ -4,6 +4,7 @@ using System.Reflection;
 using ExpensifyImporter.Application;
 using ExpensifyImporter.Database;
 using ExpensifyImporter.Library.Domain;
+using ExpensifyImporter.Library.Modules.Database;
 using ExpensifyImporter.Library.Modules.Excel;
 using ExpensifyImporter.Library.Modules.Expensify;
 using ExpensifyImporter.Library.Modules.IO;
@@ -54,6 +55,7 @@ var builder = Host.CreateDefaultBuilder(args)
         services.AddTransient(x => new ExcelFileWatcher(
             x.GetRequiredService<ILogger<ExcelFileWatcher>>(),
             fileWatchPath));
+        services.AddScoped<ExpenseDuplicatesFilter>();
         services.AddScoped<ExcelToDatabaseSequencer>();
         services.AddHostedService<Worker>();
 
@@ -66,7 +68,6 @@ var builder = Host.CreateDefaultBuilder(args)
             model.DataDirectory = config.GetValue<string>("DataDirectory");
             //set via user secret.
             model.ExpensifyAuthToken = config.GetValue<string>("ExpensifyAuthToken");
-
         });
 
         services.Configure<FeatureFlagsConfiguration>(model =>

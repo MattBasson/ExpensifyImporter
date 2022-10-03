@@ -1,6 +1,8 @@
 ﻿using ExpensifyImporter.Database;
+using ExpensifyImporter.Library.Modules.Database;
 using ExpensifyImporter.Library.Modules.Excel;
 using ExpensifyImporter.Library.Modules.Expensify;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace ExpensifyImporter.Library.Modules.Sequencing
@@ -11,18 +13,21 @@ namespace ExpensifyImporter.Library.Modules.Sequencing
         private readonly ExpensifyContext _dbContext;
         private readonly ExcelReader _excelReader;
         private readonly ExcelDtoMapper _excelDtoMapper;
+        private readonly ExpenseDuplicatesFilter _expenseDuplicatesFilter;
         private readonly ExpensifyModelExcelDtoMapper _expensifyModelExcelDtoMapper;
 
         public ExcelToDatabaseSequencer(ILogger<ExcelToDatabaseSequencer> logger,
             ExpensifyContext dbContext,
             ExcelReader excelReader,
             ExcelDtoMapper excelDtoMapper,
+            ExpenseDuplicatesFilter expenseDuplicatesFilter,
             ExpensifyModelExcelDtoMapper expensifyModelExcelDtoMapper)
         {
             _logger = logger; 
             _dbContext = dbContext;
             _excelReader = excelReader;
             _excelDtoMapper = excelDtoMapper;
+            _expenseDuplicatesFilter = expenseDuplicatesFilter;
             _expensifyModelExcelDtoMapper = expensifyModelExcelDtoMapper;
         }
 
@@ -40,10 +45,20 @@ namespace ExpensifyImporter.Library.Modules.Sequencing
             _logger.LogInformation("Mapping to expense collection for this amount of sheets : {ExcelSheetsCount} ", excelSheets.Count);
             var expenses = await _expensifyModelExcelDtoMapper.MapExpensesAsync(excelSheets);
 
-            // 4) Will save the expense model collection to the database.
-            _logger.LogInformation("Saving expenses to database for {ExpensesCount} items", expenses.Count);
-            await _dbContext.Expense.AddRangeAsync(expenses);
-            return await _dbContext.SaveChangesAsync();
+            // 4) Filters out duplicates.
+            _logger.LogInformation("Filter out duplicates {ExpensesCount} items", expenses.Count);
+            var filteredExpenses = await _expenseDuplicatesFilter.Filter(expenses);
+
+            // 5) Will save the expense model collection to the database.
+            if (filteredExpenses.Any())
+            {
+                _logger.LogInformation("Saving expenses to database for {ExpensesCount} items", filteredExpenses.Count);
+                await _dbContext.Expense.AddRangeAsync(filteredExpenses);
+                return await _dbContext.SaveChangesAsync();
+            }
+            _logger.LogInformation("Skipped saving expenses to database for {ExpensesCount} items", filteredExpenses.Count);
+            //No rows updated.
+            return 0;
         }
     }
 }
