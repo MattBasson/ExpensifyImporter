@@ -12,40 +12,11 @@ namespace ExpensifyImporter.UnitTests.Modules.Sequencing;
 
 public class ExcelToDatabaseSequencerTests
 {
-    [Fact]
-    public void Reading_Excel_Test_File_Exists()
+    private readonly List<Expense> _expenseList;
+
+    public ExcelToDatabaseSequencerTests()
     {
-        //Arrange
-        var path = $"{Environment.CurrentDirectory}\\Modules\\Sequencing\\Data\\Expense_Batch_Test_2017_02_01_1.xlsx";
-
-        //Act
-
-        //Assert
-        File.Exists(path).Should().BeTrue();
-
-        path.Should().Contain("UnitTests");
-    }
-    
-    [Fact]
-    public async Task When_ProcessDocumentAsync_Ensure_All_Items_Are_Added_To_DB()
-    {
-        //Arrange
-        var path = $"{Environment.CurrentDirectory}\\Modules\\Sequencing\\Data\\Expense_Batch_Test_2017_02_01_1.xlsx";
-        var dbContext = SQLiteHelper.CreateSqliteContext();
-        var excelReader = new ExcelReader(Substitute.For<ILogger<ExcelReader>>());
-        var excelDtoMapper = new ExcelDtoMapper(Substitute.For<ILogger<ExcelDtoMapper>>());
-        var expensifyMapper = new ExpensifyModelExcelDtoMapper(Substitute.For<ILogger<ExpensifyModelExcelDtoMapper>>());
-        var expenseDuplicateFilter =
-            new ExpenseDuplicates(Substitute.For<ILogger<ExpenseDuplicates>>(), dbContext);
-        var sequencer = new ExcelToDatabaseSequencer(
-            Substitute.For<ILogger<ExcelToDatabaseSequencer>>(),
-            dbContext,
-            excelReader,
-            excelDtoMapper,
-            expenseDuplicateFilter,
-            expensifyMapper);
-
-        var expectedExpenseList = new List<Expense>
+        _expenseList = new List<Expense>
         {
             new()
             {
@@ -140,6 +111,40 @@ public class ExcelToDatabaseSequencerTests
                 ReceiptId = 9
             }
         };
+    }
+
+    [Fact]
+    public void Reading_Excel_Test_File_Exists()
+    {
+        //Arrange
+        var path = $"{Environment.CurrentDirectory}\\Modules\\Sequencing\\Data\\Expense_Batch_Test_2017_02_01_1.xlsx";
+
+        //Act
+
+        //Assert
+        File.Exists(path).Should().BeTrue();
+
+        path.Should().Contain("UnitTests");
+    }
+    
+    [Fact]
+    public async Task When_ProcessDocumentAsync_Ensure_All_Items_Are_Added_To_DB()
+    {
+        //Arrange
+        var path = $"{Environment.CurrentDirectory}\\Modules\\Sequencing\\Data\\Expense_Batch_Test_2017_02_01_1.xlsx";
+        var dbContext = SQLiteHelper.CreateSqliteContext();
+        var excelReader = new ExcelReader(Substitute.For<ILogger<ExcelReader>>());
+        var excelDtoMapper = new ExcelDtoMapper(Substitute.For<ILogger<ExcelDtoMapper>>());
+        var expensifyMapper = new ExpensifyModelExcelDtoMapper(Substitute.For<ILogger<ExpensifyModelExcelDtoMapper>>());
+        var expenseDuplicateFilter =
+            new ExpenseDuplicates(Substitute.For<ILogger<ExpenseDuplicates>>(), dbContext);
+        var sequencer = new ExcelToDatabaseSequencer(
+            Substitute.For<ILogger<ExcelToDatabaseSequencer>>(),
+            dbContext,
+            excelReader,
+            excelDtoMapper,
+            expenseDuplicateFilter,
+            expensifyMapper);
 
         //Act 
         var dbResponse = await sequencer.ProcessDocumentAsync(path);
@@ -148,7 +153,43 @@ public class ExcelToDatabaseSequencerTests
         //Db Response being the number of rows affected.
         dbResponse.Should().Be(9);
         dbContext.Expense.Count().Should().Be(9);
-        dbContext.Expense.Should().BeEquivalentTo(expectedExpenseList,opt => opt.Excluding(e =>e.Id).Excluding(e=>e.CompanyId));
+        dbContext.Expense.Should().BeEquivalentTo(_expenseList,opt => opt.Excluding(e =>e.Id).Excluding(e=>e.CompanyId));
+        dbContext.Expense.Select(s=>s.Id).Should().NotContain(Guid.Empty);
+        dbContext.Expense.Select(s => s.CompanyId).Should().NotContain(0);
+
+    }
+    
+    [Fact]
+    public async Task When_ProcessDocumentAsync_With_DuplicateData_Ensure_No_Items_Added() 
+    {
+        //Arrange
+        var path = $"{Environment.CurrentDirectory}\\Modules\\Sequencing\\Data\\Expense_Batch_Test_2017_02_01_1.xlsx";
+        var dbContext = SQLiteHelper.CreateSqliteContext();
+
+        await dbContext.Expense.AddRangeAsync(_expenseList);
+        await dbContext.SaveChangesAsync();
+        
+        var excelReader = new ExcelReader(Substitute.For<ILogger<ExcelReader>>());
+        var excelDtoMapper = new ExcelDtoMapper(Substitute.For<ILogger<ExcelDtoMapper>>());
+        var expensifyMapper = new ExpensifyModelExcelDtoMapper(Substitute.For<ILogger<ExpensifyModelExcelDtoMapper>>());
+        var expenseDuplicateFilter =
+            new ExpenseDuplicates(Substitute.For<ILogger<ExpenseDuplicates>>(), dbContext);
+        var sequencer = new ExcelToDatabaseSequencer(
+            Substitute.For<ILogger<ExcelToDatabaseSequencer>>(),
+            dbContext,
+            excelReader,
+            excelDtoMapper,
+            expenseDuplicateFilter,
+            expensifyMapper);
+
+        //Act 
+        var dbResponse = await sequencer.ProcessDocumentAsync(path);
+
+        //Assert
+        //Db Response being the number of rows affected.
+        dbResponse.Should().Be(0);
+        dbContext.Expense.Count().Should().Be(9);
+        dbContext.Expense.Should().BeEquivalentTo(_expenseList,opt => opt.Excluding(e =>e.Id).Excluding(e=>e.CompanyId));
         dbContext.Expense.Select(s=>s.Id).Should().NotContain(Guid.Empty);
         dbContext.Expense.Select(s => s.CompanyId).Should().NotContain(0);
 
