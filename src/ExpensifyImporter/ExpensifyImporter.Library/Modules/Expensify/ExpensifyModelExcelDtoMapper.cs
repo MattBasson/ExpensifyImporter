@@ -21,16 +21,8 @@ namespace ExpensifyImporter.Library.Modules.Expensify
         {
             var expenses = new List<Expense>();
 
-            var tasks = new List<Task<List<Expense>>>();
-            foreach (var excelSheet in excelBook)
-            {
-                tasks.Add(Task.Run(() =>
-                {
-                    return excelSheet.Select(selector: GetExpense).ToList();
-                }));
-                
-            }
-            var result = await Task.WhenAll(tasks.ToArray());            
+            var result = await Task.WhenAll(excelBook
+                .Select(excelSheet => Task.Run(() => excelSheet.Select(selector: GetExpense).ToList())).ToArray());            
             foreach (var expenseSheet in result)
             {
                 expenses.AddRange(expenseSheet);
