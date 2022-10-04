@@ -32,6 +32,10 @@
     <Compile Remove="Modules\Expensify\Domain\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Modules\Image\" />
+  </ItemGroup>
+
  
 
 </Project>

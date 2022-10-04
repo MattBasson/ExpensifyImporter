@@ -19,10 +19,10 @@ namespace ExpensifyImporter.Library.Modules.Sequencing
         public async Task<int> ProcessAsync(int batchSize = 0)
         {
             // 1) Get dataset of items that have no image set (batch size sensitive)
-            //ExpenseImageBatchQuery
+            //ExpenseImageBatchQuery returns ExpenseID array
 
 
-            // 2) Download images  return an array of ids and byte arrays.
+            // 2) Download images  return an array of ExpenseIds and byte arrays.
             //Image downloader
             
             // 3) Asynchronous saving of array
