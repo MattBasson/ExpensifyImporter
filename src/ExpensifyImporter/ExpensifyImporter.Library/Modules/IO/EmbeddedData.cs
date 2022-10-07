@@ -24,5 +24,20 @@ namespace ExpensifyImporter.Library.Modules.IO
             using StreamReader reader = new StreamReader(stream);
             return reader.ReadToEnd();
         }
+        
+        public static byte[]? GetByteArray(string objectPath, Assembly assembly)
+        {
+            using var stream =
+                assembly.GetManifestResourceStream(objectPath);
+            if (stream is MemoryStream)
+            {
+                return ((MemoryStream)stream).ToArray();
+            }
+            using var memoryStream = new MemoryStream();
+            stream?.CopyTo(memoryStream);
+            return memoryStream.ToArray();
+        }
+        
+        
     }
 }
