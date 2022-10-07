@@ -64,8 +64,8 @@ namespace ExpensifyImporter.Library.Modules.Excel
             {
                 return new List<string>()
                 {
-                    cell.CellReference.Value,
-                    cell.InnerText
+                    cell?.CellReference?.Value,
+                    cell?.InnerText
                 }.ToArray();
             }
             return new List<string?>()

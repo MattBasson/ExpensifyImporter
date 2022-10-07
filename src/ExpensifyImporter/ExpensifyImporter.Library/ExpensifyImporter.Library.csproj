@@ -10,12 +10,14 @@
     <None Remove="Content\**" />
     <None Remove="Modules\ExcelReader\**" />
     <None Remove="Modules\Expensify\Domain\**" />
+    <None Remove="Modules\Image\**" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Remove="Content\**" />
     <EmbeddedResource Remove="Modules\ExcelReader\**" />
     <EmbeddedResource Remove="Modules\Expensify\Domain\**" />
+    <EmbeddedResource Remove="Modules\Image\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,10 +32,7 @@
     <Compile Remove="Content\**" />
     <Compile Remove="Modules\ExcelReader\**" />
     <Compile Remove="Modules\Expensify\Domain\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Modules\Image\" />
+    <Compile Remove="Modules\Image\**" />
   </ItemGroup>
 
  

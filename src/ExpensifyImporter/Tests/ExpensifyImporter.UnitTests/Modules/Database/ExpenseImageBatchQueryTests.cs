@@ -1,25 +1,19 @@
-﻿using Castle.Core.Logging;
+﻿using System.Globalization;
+using ExpensifyImporter.Database;
 using ExpensifyImporter.Database.Domain;
-using ExpensifyImporter.Library.Modules.Sequencing;
+using ExpensifyImporter.Library.Modules.Database;
+using ExpensifyImporter.Library.Modules.Database.Domain;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ExpensifyImporter.Library.Modules.Database;
 
-namespace ExpensifyImporter.UnitTests.Modules.Sequencing
+namespace ExpensifyImporter.UnitTests.Modules.Database
 {
-    public class ImageToDatabaseSequencerTests
+    public class ExpenseImageBatchQueryTests
     {
         private readonly List<Expense> _expenseList;
-
-        public ImageToDatabaseSequencerTests()
+        public ExpenseImageBatchQueryTests()
         {
             _expenseList = new List<Expense>
             {
@@ -32,7 +26,6 @@ namespace ExpensifyImporter.UnitTests.Modules.Sequencing
                     Category = "Meals",
                     ReceiptUrl = "https://www.expensify.com/receipts/w_cb2240f3c271914fea730ad968a7b4eca17344exxxx1.jpg",
                     ReceiptId = 1
-
                 },
                 new()
                 {
@@ -73,7 +66,6 @@ namespace ExpensifyImporter.UnitTests.Modules.Sequencing
                     Category = "Meals",
                     ReceiptUrl = "https://www.expensify.com/receipts/w_ebe8a056fb696b2b2c471a6bf84dcd624a2e760xxxx5.jpg",
                     ReceiptId = 5
-
                 },
                 new()
                 {
@@ -116,45 +108,67 @@ namespace ExpensifyImporter.UnitTests.Modules.Sequencing
                     ReceiptId = 9
                 }
             };
-          
         }
 
         [Fact]
-        public async Task When_Batch_Size_0_Ensure_All_Image_Paths_Set_in_Database()
+        public async Task Image_Batch_Query_With_No_BatchSize_Set_Should_Return_All_Expenses_With_No_Image_Set()
         {
             //Arrange
-            var dbContext = SQLiteHelper.CreateSqliteContext();
-            await dbContext.Expense.AddRangeAsync(_expenseList);
+            await using var dbContext = SQLiteHelper.CreateSqliteContext();
+            dbContext.Expense.AddRange(_expenseList);
             await dbContext.SaveChangesAsync();
-            var imageToDatabaseSequencer = new ImageToDatabaseSequencer(
-                Substitute.For<ILogger<ImageToDatabaseSequencer>>(),
-                new ExpenseImageBatchQuery(Substitute.For<ILogger<ExpenseImageBatchQuery>>(),dbContext));
+            
+            var sut =
+                new ExpenseImageBatchQuery(
+                    Substitute.For<ILogger<ExpenseImageBatchQuery>>(),
+                    dbContext);
 
+            var exepectedIds = await dbContext.Expense.Select(s => new ExpenseImage(s.Id,s.ReceiptUrl)).ToListAsync();
+            
             //Act
-            var response = await imageToDatabaseSequencer.ProcessAsync();
-
+            var response =  await sut.ExecuteAsync();
 
             //Assert
-            response.Should().Be(9);
-        }
+            response.Count().Should().Be(9);
+            response.Should().BeEquivalentTo(exepectedIds);
 
-        [Fact]
-        public async Task When_Batch_Size_Set_Ensure_Only_Set_Number_Image_Paths_Set_in_Database()
+        }
+        
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(4)]
+        [InlineData(5)]
+        [InlineData(6)]
+        [InlineData(8)]
+        public async Task Image_Batch_Query_With_Some_BatchSize_Set_Should_Return_Some_Expenses_With_No_Image_Set(int batchSize)
         {
             //Arrange
-            var dbContext = SQLiteHelper.CreateSqliteContext();
-            await dbContext.Expense.AddRangeAsync(_expenseList);
-            await dbContext.SaveChangesAsync();
-            var imageToDatabaseSequencer = new ImageToDatabaseSequencer(
-                Substitute.For<ILogger<ImageToDatabaseSequencer>>(),
-                new ExpenseImageBatchQuery(Substitute.For<ILogger<ExpenseImageBatchQuery>>(),dbContext));
+            await using var dbContext = SQLiteHelper.CreateSqliteContext();
+            dbContext.Expense.AddRange(_expenseList);
+             await dbContext.SaveChangesAsync();
+            
+            var sut =
+                new ExpenseImageBatchQuery(
+                    Substitute.For<ILogger<ExpenseImageBatchQuery>>(),
+                    dbContext);
+
+            var expectedExpenses = await dbContext.Expense
+                .Where(w => w.ReceiptImage == null)
+                .Take(batchSize)
+                .Select(s => new ExpenseImage(s.Id, s.ReceiptUrl))
+                .ToListAsync();
 
             //Act
-            var response = await imageToDatabaseSequencer.ProcessAsync(4);
-
+            var response =  await sut.ExecuteAsync(batchSize);
 
             //Assert
-            response.Should().Be(4);
+            response.Count().Should().Be(batchSize);
+            
+            response.Should().BeEquivalentTo(expectedExpenses);
+
         }
+
     }
 }
