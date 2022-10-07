@@ -1,9 +1,7 @@
 ﻿using ExpensifyImporter.Database;
-using ExpensifyImporter.Library.Modules.Database;
 using ExpensifyImporter.Library.Modules.Excel;
 using ExpensifyImporter.Library.Modules.Expensify;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace ExpensifyImporter.Library.Modules.Sequencing
 {

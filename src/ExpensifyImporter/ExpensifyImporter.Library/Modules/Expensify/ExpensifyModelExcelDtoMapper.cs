@@ -3,7 +3,6 @@ using System.Globalization;
 using DocumentFormat.OpenXml.Spreadsheet;
 using ExpensifyImporter.Database.Domain;
 using ExpensifyImporter.Library.Modules.Excel.Domain;
-using Microsoft.Extensions.Logging;
 
 namespace ExpensifyImporter.Library.Modules.Expensify
 {

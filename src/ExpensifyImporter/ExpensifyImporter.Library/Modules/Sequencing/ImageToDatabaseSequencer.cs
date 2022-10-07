@@ -1,12 +1,4 @@
-﻿using ExpensifyImporter.Database;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ExpensifyImporter.Library.Modules.Database;
-
+﻿
 namespace ExpensifyImporter.Library.Modules.Sequencing
 {
     public class ImageToDatabaseSequencer

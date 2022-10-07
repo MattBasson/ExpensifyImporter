@@ -1,7 +1,6 @@
 ﻿using ExpensifyImporter.Database;
 using ExpensifyImporter.Database.Domain;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace ExpensifyImporter.Library.Modules.Database
 {
