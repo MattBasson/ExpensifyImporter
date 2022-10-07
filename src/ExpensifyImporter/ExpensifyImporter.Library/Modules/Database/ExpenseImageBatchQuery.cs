@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using ExpensifyImporter.Database;
-using ExpensifyImporter.Database.Domain;
-using ExpensifyImporter.Library.Modules.Database.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpensifyImporter.Library.Modules.Database
 {
+    public record ExpenseImageBatchQueryResult(Guid Id,string? Url);
     public class ExpenseImageBatchQuery
     {
         private readonly ILogger<ExpenseImageBatchQuery> _logger;
@@ -21,7 +16,7 @@ namespace ExpensifyImporter.Library.Modules.Database
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<ExpenseImage>> ExecuteAsync(int batchSize = 0)
+        public async Task<IEnumerable<ExpenseImageBatchQueryResult>> ExecuteAsync(int batchSize = 0)
         {
             var queryable =  _dbContext.Expense.Where(expense => expense.ReceiptImage == null);
 
@@ -30,7 +25,7 @@ namespace ExpensifyImporter.Library.Modules.Database
                 queryable = queryable.Take(batchSize);
             }
 
-            return await queryable.Select(s=> new ExpenseImage(s.Id,s.ReceiptUrl)).ToListAsync();
+            return await queryable.Select(s=> new ExpenseImageBatchQueryResult(s.Id,s.ReceiptUrl)).ToListAsync();
         }
     }
 }

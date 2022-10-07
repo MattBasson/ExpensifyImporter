@@ -12,20 +12,24 @@ namespace ExpensifyImporter.UnitTests.Modules.IO
     public class EmbeddedDataTests
     {
 
-        
-
-        [Fact]
-        public void Getting_Embedded_Data_Yields_Correct_File_And_Content_With_Declared_Assembly()
+        [Theory]
+        [InlineData("ExpensifyImporter.UnitTests.Modules.IO.Data.TestContent.txt")]
+        [InlineData("ExpensifyImporter.UnitTests.Modules.IO.Data.cat_cats_eyes_cat_face_269574.webp")]
+        [InlineData("ExpensifyImporter.UnitTests.Modules.IO.Data.cat_domestic_cat_sweet_269854.webp")]
+        [InlineData("ExpensifyImporter.UnitTests.Modules.IO.Data.cat_feline_cats_eye_220526.webp")]
+        public void Getting_Embedded_Data_Yields_Correct_File_And_Content_With_Declared_Assembly(string path)
         {
             //Arrange
             var assembly = Assembly.GetAssembly(typeof(EmbeddedDataTests));
             //Act
-            string fileContent = EmbeddedData.Get("ExpensifyImporter.UnitTests.Modules.IO.Data.TestContent.txt", assembly);
+            string fileContent = EmbeddedData.Get(path, assembly);
 
             //Assert
             fileContent.Should().NotBeNull();
-            fileContent.Should().Contain("This is a test.");
+            fileContent.Length.Should().BePositive();
 
         }
+        
+        
     }
 }

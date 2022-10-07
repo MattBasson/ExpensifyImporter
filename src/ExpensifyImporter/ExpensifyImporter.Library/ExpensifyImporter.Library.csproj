@@ -35,6 +35,10 @@
     <Compile Remove="Modules\Image\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Modules\Database\Domain" />
+  </ItemGroup>
+
  
 
 </Project>

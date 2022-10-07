@@ -23,6 +23,12 @@
     <Content Include="Modules\Sequencing\Data\Expense_Batch_Test_2017_02_01_1.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Remove="Modules\IO\Data\cat_cats_eyes_cat_face_269574.webp" />
+    <EmbeddedResource Include="Modules\IO\Data\cat_cats_eyes_cat_face_269574.webp" />
+    <None Remove="Modules\IO\Data\cat_domestic_cat_sweet_269854.webp" />
+    <EmbeddedResource Include="Modules\IO\Data\cat_domestic_cat_sweet_269854.webp" />
+    <None Remove="Modules\IO\Data\cat_feline_cats_eye_220526.webp" />
+    <EmbeddedResource Include="Modules\IO\Data\cat_feline_cats_eye_220526.webp" />
   </ItemGroup>
 
   <ItemGroup>

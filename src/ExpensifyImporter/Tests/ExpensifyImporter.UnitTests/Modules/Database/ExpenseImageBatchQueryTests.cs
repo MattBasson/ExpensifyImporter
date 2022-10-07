@@ -1,8 +1,6 @@
 ﻿using System.Globalization;
-using ExpensifyImporter.Database;
 using ExpensifyImporter.Database.Domain;
 using ExpensifyImporter.Library.Modules.Database;
-using ExpensifyImporter.Library.Modules.Database.Domain;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -123,7 +121,7 @@ namespace ExpensifyImporter.UnitTests.Modules.Database
                     Substitute.For<ILogger<ExpenseImageBatchQuery>>(),
                     dbContext);
 
-            var exepectedIds = await dbContext.Expense.Select(s => new ExpenseImage(s.Id,s.ReceiptUrl)).ToListAsync();
+            var exepectedIds = await dbContext.Expense.Select(s => new ExpenseImageBatchQueryResult(s.Id,s.ReceiptUrl)).ToListAsync();
             
             //Act
             var response =  await sut.ExecuteAsync();
@@ -157,7 +155,7 @@ namespace ExpensifyImporter.UnitTests.Modules.Database
             var expectedExpenses = await dbContext.Expense
                 .Where(w => w.ReceiptImage == null)
                 .Take(batchSize)
-                .Select(s => new ExpenseImage(s.Id, s.ReceiptUrl))
+                .Select(s => new ExpenseImageBatchQueryResult(s.Id, s.ReceiptUrl))
                 .ToListAsync();
 
             //Act
