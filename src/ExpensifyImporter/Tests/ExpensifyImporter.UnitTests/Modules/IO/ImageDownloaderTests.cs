@@ -18,13 +18,9 @@ namespace ExpensifyImporter.UnitTests.Modules.IO
         }
 
         [Theory]
-        [InlineData("https://images.all-free-download.com/images/graphicwebp/cat_domestic_cat_sweet_269854.webp",
-            "cat_domestic_cat_sweet_269854.webp")]
-        [InlineData("https://images.all-free-download.com/images/graphicwebp/cat_feline_cats_eye_220526.webp",
-            "cat_feline_cats_eye_220526.webp")]
-        [InlineData("https://images.all-free-download.com/images/graphicwebp/cat_cats_eyes_cat_face_269574.webp",
-            "cat_cats_eyes_cat_face_269574.webp")]
- 
+        [InlineData(Constants.CatImageUrl1, Constants.CatImageFile1)]
+        [InlineData(Constants.CatImageUrl2, Constants.CatImageFile2)]
+        [InlineData(Constants.CatImageUrl3, Constants.CatImageFile3)]
         public async Task When_Image_Download_It_Successfully_Downloads_Fake_Image(string url, string filename)
         {
             //Arrange 
@@ -50,12 +46,9 @@ namespace ExpensifyImporter.UnitTests.Modules.IO
         
         //Todo: Move this to integration test.
         [Theory]
-        [InlineData("https://images.all-free-download.com/images/graphicwebp/cat_domestic_cat_sweet_269854.webp",
-            "cat_domestic_cat_sweet_269854.webp")]
-        [InlineData("https://images.all-free-download.com/images/graphicwebp/cat_feline_cats_eye_220526.webp",
-            "cat_feline_cats_eye_220526.webp")]
-        [InlineData("https://images.all-free-download.com/images/graphicwebp/cat_cats_eyes_cat_face_269574.webp",
-            "cat_cats_eyes_cat_face_269574.webp")]
+        [InlineData(Constants.CatImageUrl1, Constants.CatImageFile1)]
+        [InlineData(Constants.CatImageUrl2, Constants.CatImageFile2)]
+        [InlineData(Constants.CatImageUrl3, Constants.CatImageFile3)]
         public async Task When_Image_Download_It_Successfully_Downloads_Real_Image(string url, string filename)
         {
             //Arrange 
