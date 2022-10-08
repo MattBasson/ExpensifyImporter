@@ -16,7 +16,6 @@ namespace ExpensifyImporter.Library.Modules.Expensify
 
         public async Task<IEnumerable<ExpensifyImageDownloadResult>> ExecuteAsync(IEnumerable<ExpenseImageBatchQueryResult> batch)
         {
-            
             var tasks = batch.Select(expenseImageBatchQueryResult => _imageDownloader.ExecuteAsync(expenseImageBatchQueryResult.Url)).ToList();
             var result = await Task.WhenAll(tasks);
 
