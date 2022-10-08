@@ -25,16 +25,16 @@ namespace ExpensifyImporter.Library.Modules.IO
             return reader.ReadToEnd();
         }
         
-        public static byte[]? GetByteArray(string objectPath, Assembly assembly)
+        public static async Task<byte[]?> GetByteArrayAsync(string objectPath, Assembly assembly)
         {
-            using var stream =
+            await using var stream =
                 assembly.GetManifestResourceStream(objectPath);
             if (stream is MemoryStream)
             {
                 return ((MemoryStream)stream).ToArray();
             }
             using var memoryStream = new MemoryStream();
-            stream?.CopyTo(memoryStream);
+            await stream?.CopyToAsync(memoryStream);
             return memoryStream.ToArray();
         }
         

@@ -1,11 +1,9 @@
 ﻿using System.Net;
-using System.Net.Http.Headers;
 using System.Reflection;
 using ExpensifyImporter.Library.Modules.IO;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
-using Moq;
-using Moq.Protected;
+
 using NSubstitute;
 
 namespace ExpensifyImporter.UnitTests.Modules.IO
@@ -30,12 +28,13 @@ namespace ExpensifyImporter.UnitTests.Modules.IO
         public async Task When_Image_Download_It_Successfully_Downloads_Fake_Image(string url, string filename)
         {
             //Arrange 
-            var expectedFileByteArray =
-                EmbeddedData.GetByteArray($"ExpensifyImporter.UnitTests.Modules.IO.Data.{filename}",
+            var expectedFileByteArray = await
+                EmbeddedData.GetByteArrayAsync($"ExpensifyImporter.UnitTests.Modules.IO.Data.{filename}",
                     Assembly.GetAssembly(typeof(ImageDownloaderTests)));
             
             
             var httpClient = new HttpClient(new FakeImageDownloaderHttpMessageHandler());
+            
 
             var sut = new ImageDownloader(Substitute.For<ILogger<ImageDownloader>>(), httpClient);
 
@@ -52,22 +51,24 @@ namespace ExpensifyImporter.UnitTests.Modules.IO
 
     public class FakeImageDownloaderHttpMessageHandler : HttpMessageHandler
     {
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            //get the filename from the request
             var fileName =
                 request.RequestUri?.OriginalString[(request.RequestUri.OriginalString.LastIndexOf("/", StringComparison.Ordinal)+1)..];
-            var fileByteArray = EmbeddedData.GetByteArray($"ExpensifyImporter.UnitTests.Modules.IO.Data.{fileName}",
+            //Get the file byte array from embedded data.
+            var fileByteArray = await EmbeddedData.GetByteArrayAsync($"ExpensifyImporter.UnitTests.Modules.IO.Data.{fileName}",
                 Assembly.GetAssembly(typeof(ImageDownloaderTests)));
             if (fileByteArray != null)
             {
-                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
+                //return the fileByteArray if it matches the request
+                return new HttpResponseMessage(HttpStatusCode.OK)
                 {
                     Content = new ByteArrayContent(fileByteArray)
-                });
+                };
             }
-
-            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NoContent));
-
+            //otherwise return no content
+            return new HttpResponseMessage(HttpStatusCode.NoContent);
         }
     }
 }
