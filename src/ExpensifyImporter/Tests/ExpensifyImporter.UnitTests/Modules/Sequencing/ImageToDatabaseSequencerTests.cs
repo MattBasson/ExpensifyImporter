@@ -12,6 +12,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ExpensifyImporter.Library.Modules.Database;
+using ExpensifyImporter.Library.Modules.Expensify;
+using ExpensifyImporter.Library.Modules.IO;
 
 namespace ExpensifyImporter.UnitTests.Modules.Sequencing
 {
@@ -128,7 +130,9 @@ namespace ExpensifyImporter.UnitTests.Modules.Sequencing
             await dbContext.SaveChangesAsync();
             var imageToDatabaseSequencer = new ImageToDatabaseSequencer(
                 Substitute.For<ILogger<ImageToDatabaseSequencer>>(),
-                new ExpenseImageBatchQuery(Substitute.For<ILogger<ExpenseImageBatchQuery>>(),dbContext));
+                new ExpenseImageBatchQuery(Substitute.For<ILogger<ExpenseImageBatchQuery>>(),dbContext),
+                new ExpensifyImageDownloader(Substitute.For<ILogger<ExpensifyImageDownloader>>(),
+                    new ImageDownloader(Substitute.For<ILogger<ImageDownloader>>(),new HttpClient())));
 
             //Act
             var response = await imageToDatabaseSequencer.ProcessAsync();
@@ -147,7 +151,9 @@ namespace ExpensifyImporter.UnitTests.Modules.Sequencing
             await dbContext.SaveChangesAsync();
             var imageToDatabaseSequencer = new ImageToDatabaseSequencer(
                 Substitute.For<ILogger<ImageToDatabaseSequencer>>(),
-                new ExpenseImageBatchQuery(Substitute.For<ILogger<ExpenseImageBatchQuery>>(),dbContext));
+                new ExpenseImageBatchQuery(Substitute.For<ILogger<ExpenseImageBatchQuery>>(),dbContext),
+                new ExpensifyImageDownloader(Substitute.For<ILogger<ExpensifyImageDownloader>>(),
+                    new ImageDownloader(Substitute.For<ILogger<ImageDownloader>>(),new HttpClient())));
 
             //Act
             var response = await imageToDatabaseSequencer.ProcessAsync(4);

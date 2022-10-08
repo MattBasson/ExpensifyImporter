@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExpensifyImporter.Library.Modules.Database
 {
-    public record ExpenseImageBatchQueryResult(Guid Id,string? Url);
+    public record ExpenseImageBatchQueryResult(Guid ExpenseId,string? Url);
     public class ExpenseImageBatchQuery
     {
         private readonly ILogger<ExpenseImageBatchQuery> _logger;

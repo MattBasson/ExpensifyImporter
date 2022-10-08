@@ -1,17 +1,22 @@
 ﻿
+using ExpensifyImporter.Library.Modules.Expensify;
+
 namespace ExpensifyImporter.Library.Modules.Sequencing
 {
     public class ImageToDatabaseSequencer
     {
         private readonly ILogger<ImageToDatabaseSequencer> _logger;
         private readonly ExpenseImageBatchQuery _expenseImageBatchQuery;
+        private readonly ExpensifyImageDownloader _expensifyImageDownloader;
 
         public ImageToDatabaseSequencer(
             ILogger<ImageToDatabaseSequencer> logger,
-            ExpenseImageBatchQuery expenseImageBatchQuery )
+            ExpenseImageBatchQuery expenseImageBatchQuery,
+            ExpensifyImageDownloader expensifyImageDownloader)
         {
             _logger = logger;
             _expenseImageBatchQuery = expenseImageBatchQuery;
+            _expensifyImageDownloader = expensifyImageDownloader;
         }
 
         public async Task<int> ProcessAsync(int batchSize = 0)
@@ -23,7 +28,8 @@ namespace ExpensifyImporter.Library.Modules.Sequencing
 
 
             // 2) Download images  return an array of ExpenseIds and byte arrays.
-            //Image downloader
+            _logger.LogInformation("Downloading image batch {BatchSize}", batchSize);
+            var downloadResult = await _expensifyImageDownloader.ExecuteAsync(query);
             
             // 3) Asynchronous saving of array
             //return rows modifed
