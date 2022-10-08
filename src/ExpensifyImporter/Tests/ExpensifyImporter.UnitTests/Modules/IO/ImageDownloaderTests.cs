@@ -34,20 +34,8 @@ namespace ExpensifyImporter.UnitTests.Modules.IO
                 EmbeddedData.GetByteArray($"ExpensifyImporter.UnitTests.Modules.IO.Data.{filename}",
                     Assembly.GetAssembly(typeof(ImageDownloaderTests)));
             
-            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-            handlerMock
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>()
-                ).ReturnsAsync(new HttpResponseMessage()
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Content = new ByteArrayContent(expectedFileByteArray)
-                }).Verifiable();
-
-            var httpClient = new HttpClient(handlerMock.Object);
+            
+            var httpClient = new HttpClient(new FakeImageDownloaderHttpMessageHandler());
 
             var sut = new ImageDownloader(Substitute.For<ILogger<ImageDownloader>>(), httpClient);
 
@@ -57,16 +45,29 @@ namespace ExpensifyImporter.UnitTests.Modules.IO
             //Assert
 
             result.Should().Equal(expectedFileByteArray);
-                            
-            handlerMock.Protected().Verify(
-                "SendAsync",
-                Times.Exactly(1), // we expected a single external request
-                ItExpr.Is<HttpRequestMessage>(req =>
-                        req.Method == HttpMethod.Get  // we expected a GET request
-                        && req.RequestUri == new Uri(url) // to this uri
-                ),
-                ItExpr.IsAny<CancellationToken>()
-            );
+
+            
+        }
+    }
+
+    public class FakeImageDownloaderHttpMessageHandler : HttpMessageHandler
+    {
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            var fileName =
+                request.RequestUri?.OriginalString[(request.RequestUri.OriginalString.LastIndexOf("/", StringComparison.Ordinal)+1)..];
+            var fileByteArray = EmbeddedData.GetByteArray($"ExpensifyImporter.UnitTests.Modules.IO.Data.{fileName}",
+                Assembly.GetAssembly(typeof(ImageDownloaderTests)));
+            if (fileByteArray != null)
+            {
+                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new ByteArrayContent(fileByteArray)
+                });
+            }
+
+            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NoContent));
+
         }
     }
 }
