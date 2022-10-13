@@ -8,15 +8,18 @@ namespace ExpensifyImporter.Library.Modules.Sequencing
         private readonly ILogger<ImageToDatabaseSequencer> _logger;
         private readonly ExpenseImageBatchQuery _expenseImageBatchQuery;
         private readonly ExpensifyImageDownloader _expensifyImageDownloader;
+        private readonly ExpenseImageBatchCommand _expenseImageBatchCommand;
 
         public ImageToDatabaseSequencer(
             ILogger<ImageToDatabaseSequencer> logger,
             ExpenseImageBatchQuery expenseImageBatchQuery,
-            ExpensifyImageDownloader expensifyImageDownloader)
+            ExpensifyImageDownloader expensifyImageDownloader,
+            ExpenseImageBatchCommand expenseImageBatchCommand)
         {
             _logger = logger;
             _expenseImageBatchQuery = expenseImageBatchQuery;
             _expensifyImageDownloader = expensifyImageDownloader;
+            _expenseImageBatchCommand = expenseImageBatchCommand;
         }
 
         public async Task<int> ProcessAsync(int batchSize = 0)
@@ -32,11 +35,13 @@ namespace ExpensifyImporter.Library.Modules.Sequencing
             var downloadResult = await _expensifyImageDownloader.ExecuteAsync(query);
             
             // 3) Asynchronous saving of array
+            _logger.LogInformation("Saving image batch {BatchSize} to database", batchSize);
+            var saveResult = await _expenseImageBatchCommand.ExecuteAsync(downloadResult);
             //return rows modifed
             //Expensse Batch Commaand
             
 
-            return 0;
+            return saveResult;
         }
     }
 }
