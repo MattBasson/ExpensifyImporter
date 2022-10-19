@@ -1,7 +1,6 @@
 ﻿using ExpensifyImporter.Database;
 using ExpensifyImporter.Library.Modules.Excel;
 using ExpensifyImporter.Library.Modules.Expensify;
-using Microsoft.EntityFrameworkCore;
 
 namespace ExpensifyImporter.Library.Modules.Sequencing
 {
@@ -14,6 +13,7 @@ namespace ExpensifyImporter.Library.Modules.Sequencing
         private readonly ExpenseDuplicates _expenseDuplicates;
         private readonly ExpensifyModelExcelDtoMapper _expensifyModelExcelDtoMapper;
 
+
         public ExcelToDatabaseSequencer(ILogger<ExcelToDatabaseSequencer> logger,
             ExpensifyContext dbContext,
             ExcelReader excelReader,
@@ -21,7 +21,7 @@ namespace ExpensifyImporter.Library.Modules.Sequencing
             ExpenseDuplicates expenseDuplicates,
             ExpensifyModelExcelDtoMapper expensifyModelExcelDtoMapper)
         {
-            _logger = logger; 
+            _logger = logger;
             _dbContext = dbContext;
             _excelReader = excelReader;
             _excelDtoMapper = excelDtoMapper;
@@ -38,9 +38,10 @@ namespace ExpensifyImporter.Library.Modules.Sequencing
             // 2) Will deserialize that the json into a generic excel Poco
             _logger.LogInformation("Deserializing Json to Excel Poco for Json : {ExcelJson}", excelJson);
             var excelSheets = await _excelDtoMapper.DeserializeAsync(excelJson);
-        
+
             // 3) Will map the excel poco to an expense model collection
-            _logger.LogInformation("Mapping to expense collection for this amount of sheets : {ExcelSheetsCount} ", excelSheets.Count);
+            _logger.LogInformation("Mapping to expense collection for this amount of sheets : {ExcelSheetsCount} ",
+                excelSheets.Count);
             var expenses = await _expensifyModelExcelDtoMapper.MapExpensesAsync(excelSheets);
 
             // 4) Filters out duplicates.
@@ -54,7 +55,9 @@ namespace ExpensifyImporter.Library.Modules.Sequencing
                 await _dbContext.Expense.AddRangeAsync(filteredExpenses);
                 return await _dbContext.SaveChangesAsync();
             }
-            _logger.LogInformation("Skipped saving expenses to database for {ExpensesCount} items", filteredExpenses.Count);
+
+            _logger.LogInformation("Skipped saving expenses to database for {ExpensesCount} items",
+                filteredExpenses.Count);
             //No rows updated.
             return 0;
         }

@@ -23,19 +23,19 @@ namespace ExpensifyImporter.UnitTests.Modules.Expensify
             //Arrange
             var batch = new List<ExpenseImageBatchQueryResult>()
             {
-                new(Guid.NewGuid(), "https://images.all-free-download.com/images/graphicwebp/cat_domestic_cat_sweet_269854.webp"),
-                new(Guid.NewGuid(), "https://images.all-free-download.com/images/graphicwebp/cat_feline_cats_eye_220526.webp"),
-                new(Guid.NewGuid(), "https://images.all-free-download.com/images/graphicwebp/cat_cats_eyes_cat_face_269574.webp")
+                new(Guid.NewGuid(), Constants.CatImageUrl1),
+                new(Guid.NewGuid(), Constants.CatImageUrl2),
+                new(Guid.NewGuid(), Constants.CatImageUrl3)
             };
             const string EmbeddedDataPath = "ExpensifyImporter.UnitTests.Modules.IO.Data.";
             var expectedResult = new List<ExpensifyImageDownloadResult>()
             {
                 new(batch[0].ExpenseId, await EmbeddedData.GetByteArrayAsync(
-                    $"ExpensifyImporter.UnitTests.Modules.IO.Data.cat_domestic_cat_sweet_269854.webp",
+                    $"{EmbeddedDataPath}{Constants.CatImageFile1}",
                     Assembly.GetAssembly(typeof(ExpensifyImageDownloaderTests)))),
-                new (batch[1].ExpenseId, await EmbeddedData.GetByteArrayAsync($"ExpensifyImporter.UnitTests.Modules.IO.Data.cat_feline_cats_eye_220526.webp",
+                new (batch[1].ExpenseId, await EmbeddedData.GetByteArrayAsync($"{EmbeddedDataPath}{Constants.CatImageFile2}",
                     Assembly.GetAssembly(typeof(ExpensifyImageDownloaderTests)))),
-                new (batch[2].ExpenseId, await EmbeddedData.GetByteArrayAsync($"ExpensifyImporter.UnitTests.Modules.IO.Data.cat_cats_eyes_cat_face_269574.webp",
+                new (batch[2].ExpenseId, await EmbeddedData.GetByteArrayAsync($"{EmbeddedDataPath}{Constants.CatImageFile3}",
                     Assembly.GetAssembly(typeof(ExpensifyImageDownloaderTests)))),
             };
             

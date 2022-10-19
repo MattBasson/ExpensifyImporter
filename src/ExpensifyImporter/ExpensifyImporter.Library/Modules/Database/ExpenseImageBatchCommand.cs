@@ -1,4 +1,5 @@
 ﻿using ExpensifyImporter.Database;
+using ExpensifyImporter.Database.Domain;
 using ExpensifyImporter.Library.Modules.Expensify;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,21 +21,28 @@ namespace ExpensifyImporter.Library.Modules.Database
 
         public async Task<int> ExecuteAsync(IEnumerable<ExpensifyImageDownloadResult> batch)
         {
-            var tasks = batch.Select(UpdateExpenseByDownloadResult).ToList();
+            // var tasks = batch.Select(UpdateExpenseByDownloadResult).ToList();
+            //
+            // var results = await Task.WhenAll(tasks);
+            foreach (var expensifyImageDownloadResult in batch)
+            {
+                var item = await _dbContext.Expense.SingleAsync(s => s.Id == expensifyImageDownloadResult.ExpenseId);
+                item.ReceiptImage = expensifyImageDownloadResult.FileContents;
+                _dbContext.Expense.Update(item);
+            }
 
-            var results = await Task.WhenAll(tasks);
+            //_dbContext.Expense.UpdateRange(results.ToList());
 
-            return results.Aggregate((a,b)=> a+b);
+            return await _dbContext.SaveChangesAsync();
         }
 
-        private async Task<int> UpdateExpenseByDownloadResult(ExpensifyImageDownloadResult downloadResult)
+        private async Task<Expense> UpdateExpenseByDownloadResult(ExpensifyImageDownloadResult downloadResult)
         {
-            var result = await _dbContext.Expense.SingleOrDefaultAsync(s => s.Id == downloadResult.ExpenseId);
+            var result = await _dbContext.Expense.SingleAsync(s => s.Id == downloadResult.ExpenseId);
 
-            if (result == null) return 0;
             result.ReceiptImage = downloadResult.FileContents;
-            return await _dbContext.SaveChangesAsync();
 
+            return result;
         }
     }
 }
