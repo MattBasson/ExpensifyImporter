@@ -16,12 +16,21 @@ namespace ExpensifyImporter.Library.Modules.Expensify
 
         public async Task<IEnumerable<ExpensifyImageDownloadResult>> ExecuteAsync(IEnumerable<ExpenseImageBatchQueryResult> batch)
         {
-            var tasks = batch.Select(expenseImageBatchQueryResult => _imageDownloader.ExecuteAsync(expenseImageBatchQueryResult.Url)).ToList();
-            var result = await Task.WhenAll(tasks);
-
-            return result.Select(downloadResult =>
-                new ExpensifyImageDownloadResult(batch.First(f => f.Url == downloadResult.url).ExpenseId,
-                    downloadResult.fileContents)).ToList();
+            var tasks = batch.Select(expenseImageBatchQueryResult =>
+                GetDownloadResult(expenseImageBatchQueryResult.ExpenseId, expenseImageBatchQueryResult.Url)).ToList();
+           
+            return await Task.WhenAll(tasks);
         }
+
+        private async Task<ExpensifyImageDownloadResult> GetDownloadResult(Guid id, string? url)
+        {
+            if (url == null) return new ExpensifyImageDownloadResult(id, null);
+            
+            var downloadResult = await _imageDownloader.ExecuteAsync(url);
+
+            return new ExpensifyImageDownloadResult(id, downloadResult.fileContents);
+
+        }
+        
     }
 }
