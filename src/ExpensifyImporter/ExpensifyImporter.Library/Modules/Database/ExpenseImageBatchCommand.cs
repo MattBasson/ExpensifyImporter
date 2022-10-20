@@ -21,17 +21,9 @@ namespace ExpensifyImporter.Library.Modules.Database
 
         public async Task<int> ExecuteAsync(IEnumerable<ExpensifyImageDownloadResult> batch)
         {
-            // var tasks = batch.Select(UpdateExpenseByDownloadResult).ToList();
-            //
-            // var results = await Task.WhenAll(tasks);
-            foreach (var expensifyImageDownloadResult in batch)
-            {
-                var item = await _dbContext.Expense.SingleAsync(s => s.Id == expensifyImageDownloadResult.ExpenseId);
-                item.ReceiptImage = expensifyImageDownloadResult.FileContents;
-                _dbContext.Expense.Update(item);
-            }
-
-            //_dbContext.Expense.UpdateRange(results.ToList());
+            var tasks = batch.Select(UpdateExpenseByDownloadResult).ToList();           
+            
+            _dbContext.Expense.UpdateRange(await Task.WhenAll(tasks));
 
             return await _dbContext.SaveChangesAsync();
         }
