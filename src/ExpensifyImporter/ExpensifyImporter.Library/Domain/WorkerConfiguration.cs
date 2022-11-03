@@ -9,5 +9,7 @@ namespace ExpensifyImporter.Library.Domain
         public string DataDirectory { get; set; }
 
         public string ExpensifyAuthToken { get; set; }
+
+        public int ImageDownloadBatchSize { get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace ExpensifyImporter.Application
         private readonly WorkerConfiguration _workerConfiguration;
         private readonly FeatureFlagsConfiguration _featureConfiguration;
         private readonly ExcelToDatabaseSequencer _excelSequencer;
+        private readonly ImageToDatabaseSequencer _imageToDatabaseSequencer;
         private readonly DirectoryInfo _directoryInfo;
         private readonly string _watchPath;
 
@@ -22,12 +23,14 @@ namespace ExpensifyImporter.Application
             IOptions<WorkerConfiguration> workerConfiguration,
             IOptions<FeatureFlagsConfiguration> featureConfiguration,
             ExcelFileWatcher excelFileWatcher,
-            ExcelToDatabaseSequencer excelSequencer)
+            ExcelToDatabaseSequencer excelSequencer,
+            ImageToDatabaseSequencer imageToDatabaseSequencer)
         {
             _logger = logger;
             _workerConfiguration = workerConfiguration.Value;
             _featureConfiguration = featureConfiguration.Value;
             _excelSequencer = excelSequencer;
+            _imageToDatabaseSequencer = imageToDatabaseSequencer;
             _watchPath = excelFileWatcher.Path;
             if (_featureConfiguration.WatchDirectory)
             {
@@ -55,6 +58,11 @@ namespace ExpensifyImporter.Application
                 {
                     _logger.LogInformation("Poll directory enabled running ProcessExcelFiles for path: {WatchPath}", _watchPath);
                     await ProcessExcelFilesInPath();
+                }
+
+                if (_featureConfiguration.DownloadImages)
+                {
+
                 }
                 await Task.Delay(_workerConfiguration.Interval, stoppingToken);
             }

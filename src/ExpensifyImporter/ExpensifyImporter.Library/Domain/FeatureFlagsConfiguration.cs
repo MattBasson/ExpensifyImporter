@@ -18,5 +18,11 @@ namespace ExpensifyImporter.Library.Domain
         /// Polls the directory by the Workers interval and loads any new files found
         /// </summary>
         public bool PollDirectory { get; set; }
+
+        /// <summary>
+        /// If true instructs the worker to download images for items already in the database.
+        /// </summary>
+        public bool DownloadImages { get; set; }
+
     }
 }
