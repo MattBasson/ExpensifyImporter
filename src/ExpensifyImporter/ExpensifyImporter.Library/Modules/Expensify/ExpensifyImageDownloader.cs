@@ -7,11 +7,13 @@ namespace ExpensifyImporter.Library.Modules.Expensify
     {
         private readonly ILogger<ExpensifyImageDownloader> _logger;
         private readonly ImageDownloader _imageDownloader;
+        
 
         public ExpensifyImageDownloader(ILogger<ExpensifyImageDownloader> logger, ImageDownloader imageDownloader)
         {
             _logger = logger;
             _imageDownloader = imageDownloader;
+            
         }
 
         public async Task<IEnumerable<ExpensifyImageDownloadResult>> ExecuteAsync(IEnumerable<ExpenseImageBatchQueryResult> batch)

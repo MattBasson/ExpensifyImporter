@@ -27,8 +27,8 @@ namespace ExpensifyImporter.UnitTests.Modules.IO
             var expectedFileByteArray = await
                 EmbeddedData.GetByteArrayAsync($"ExpensifyImporter.UnitTests.Modules.IO.Data.{filename}",
                     Assembly.GetAssembly(typeof(ImageDownloaderTests)));
-            
-            
+
+        
             var httpClient = new HttpClient(new FakeImageDownloaderHttpMessageHandler());
             
 

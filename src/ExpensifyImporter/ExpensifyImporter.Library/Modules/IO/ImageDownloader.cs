@@ -5,11 +5,13 @@
     {
         private readonly ILogger<ImageDownloader> _logger;
         private readonly HttpClient _client;
+        private readonly string _authToken;
 
         public ImageDownloader(ILogger<ImageDownloader> logger, HttpClient client)
         {
             _logger = logger;
             _client = client;
+            
         }
 
         public async Task<ImageDownloadResult> ExecuteAsync(string url)
@@ -22,6 +24,7 @@
         private async Task<byte[]?> DownloadImageAsync(string url)
         {
             _logger.LogDebug("Downloading image {Url}",url);
+            
             
             return await _client.GetByteArrayAsync(url);
         }

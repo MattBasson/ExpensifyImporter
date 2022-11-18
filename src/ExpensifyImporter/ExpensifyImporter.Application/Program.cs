@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using System.Reflection;
+using System.Web;
 using ExpensifyImporter.Application;
 using ExpensifyImporter.Database;
 using ExpensifyImporter.Library.Domain;
@@ -67,7 +68,6 @@ var builder = Host.CreateDefaultBuilder(args)
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
                 builder => { builder.CommandTimeout(60); });
         })
-        .AddHttpClient()
         .AddScoped<ExcelReader>()
         .AddScoped<ExcelDtoMapper>()
         .AddScoped<ExpensifyModelExcelDtoMapper>()
@@ -81,7 +81,14 @@ var builder = Host.CreateDefaultBuilder(args)
         .AddScoped<ExpenseImageBatchCommand>()
         .AddScoped<ExpensifyImageDownloader>()
         .AddScoped<ImageToDatabaseSequencer>()
-        .AddHostedService<Worker>();      
+        .AddHostedService<Worker>();
+
+        services.AddHttpClient<ImageDownloader>(client =>
+        {
+            
+            
+            client.DefaultRequestHeaders.Add("Cookie", $"authToken={configuration["Worker:ExpensifyAuthToken"]}");
+        });
     });
 
 using var host = builder.Build();

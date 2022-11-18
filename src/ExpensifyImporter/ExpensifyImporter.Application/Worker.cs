@@ -57,12 +57,14 @@ namespace ExpensifyImporter.Application
                 if (_featureConfiguration.PollDirectory)
                 {
                     _logger.LogInformation("Poll directory enabled running ProcessExcelFiles for path: {WatchPath}", _watchPath);
+
                     await ProcessExcelFilesInPath();
                 }
 
                 if (_featureConfiguration.DownloadImages)
                 {
-
+                    _logger.LogInformation("Download images  enabled running download image sequencer");
+                    await _imageToDatabaseSequencer.ProcessAsync(_workerConfiguration.ImageDownloadBatchSize);
                 }
                 await Task.Delay(_workerConfiguration.Interval, stoppingToken);
             }
