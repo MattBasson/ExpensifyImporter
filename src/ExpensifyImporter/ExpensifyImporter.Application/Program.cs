@@ -35,53 +35,53 @@ var builder = Host.CreateDefaultBuilder(args)
         //Configure services here...
 
         services
-            .AddDbContext<ExpensifyContext>((provider, options) =>
+        .Configure<WorkerConfiguration>(model =>
+        {
+            var config = configuration.GetSection("Worker");
+            model.Interval = config.GetValue<int>("Interval");
+            model.DataDirectory = config.GetValue<string>("DataDirectory");
+            //set via user secret.
+            model.ExpensifyAuthToken = config.GetValue<string>("ExpensifyAuthToken");
+            model.ImageDownloadBatchSize = config.GetValue<int>("ImageDownloadBatchSize");
+        })
+        .Configure<FeatureFlagsConfiguration>(model =>
+        {
+            var config = configuration.GetSection("FeatureFlags");
+            model.WatchDirectory = config.GetValue<bool>("WatchDirectory");
+            model.PollDirectory = config.GetValue<bool>("PollDirectory");
+            model.DownloadImages = config.GetValue<bool>("DownloadImages");
+
+        })
+        .AddDbContext<ExpensifyContext>((provider, options) =>
+        {
+            var connectionString = new MySqlConnectionStringBuilder
             {
-                var connectionString = new MySqlConnectionStringBuilder
-                {
-                    Server = configuration["MySql:Server"],
-                    Port = configuration.GetValue<uint>("MySql:Port"),
-                    Database = configuration["MySql:Database"],
-                    //Set with user secrets
-                    UserID = configuration["MySql:User"],
-                    Password = configuration["MySql:Password"],
-                    ConnectionTimeout = 3000
-                }.ToString();
-                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
-                    builder => { builder.CommandTimeout(60); });
-            })
-            .AddHttpClient()
-            .AddScoped<ExcelReader>()
-            .AddScoped<ExcelDtoMapper>()
-            .AddScoped<ExpensifyModelExcelDtoMapper>()  
-            .AddTransient(x => new ExcelFileWatcher(
+                Server = configuration["MySql:Server"],
+                Port = configuration.GetValue<uint>("MySql:Port"),
+                Database = configuration["MySql:Database"],
+                //Set with user secrets
+                UserID = configuration["MySql:User"],
+                Password = configuration["MySql:Password"],
+                ConnectionTimeout = 3000
+            }.ToString();
+            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
+                builder => { builder.CommandTimeout(60); });
+        })
+        .AddHttpClient()
+        .AddScoped<ExcelReader>()
+        .AddScoped<ExcelDtoMapper>()
+        .AddScoped<ExpensifyModelExcelDtoMapper>()
+        .AddTransient(x => new ExcelFileWatcher(
             x.GetRequiredService<ILogger<ExcelFileWatcher>>(),
             fileWatchPath))
-            .AddScoped<ExpenseDuplicates>()
-            .AddScoped<ExcelToDatabaseSequencer>()
-            .AddScoped<ImageDownloader>()
-            .AddScoped<ExpenseImageBatchQuery>()
-            .AddScoped<ExpenseImageBatchCommand>()
-            .AddScoped<ExpensifyImageDownloader>()
-            .AddScoped<ImageToDatabaseSequencer>()
-            .AddHostedService<Worker>()
-            .Configure<WorkerConfiguration>(model =>
-            {
-                var config = configuration.GetSection("Worker");
-                model.Interval = config.GetValue<int>("Interval");
-                model.DataDirectory = config.GetValue<string>("DataDirectory");
-                //set via user secret.
-                model.ExpensifyAuthToken = config.GetValue<string>("ExpensifyAuthToken");
-                model.ImageDownloadBatchSize = config.GetValue<int>("ImageDownloadBatchSize");
-            })
-            .Configure<FeatureFlagsConfiguration>(model =>
-            {
-                var config = configuration.GetSection("FeatureFlags");
-                model.WatchDirectory = config.GetValue<bool>("WatchDirectory");
-                model.PollDirectory = config.GetValue<bool>("PollDirectory");
-                model.DownloadImages = config.GetValue<bool>("DownloadImages");
-            });
-      
+        .AddScoped<ExpenseDuplicates>()
+        .AddScoped<ExcelToDatabaseSequencer>()
+        .AddScoped<ImageDownloader>()
+        .AddScoped<ExpenseImageBatchQuery>()
+        .AddScoped<ExpenseImageBatchCommand>()
+        .AddScoped<ExpensifyImageDownloader>()
+        .AddScoped<ImageToDatabaseSequencer>()
+        .AddHostedService<Worker>();      
     });
 
 using var host = builder.Build();
