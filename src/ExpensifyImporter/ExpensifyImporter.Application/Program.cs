@@ -51,6 +51,7 @@ var builder = Host.CreateDefaultBuilder(args)
             model.WatchDirectory = config.GetValue<bool>("WatchDirectory");
             model.PollDirectory = config.GetValue<bool>("PollDirectory");
             model.DownloadImages = config.GetValue<bool>("DownloadImages");
+            model.VerifyImages = config.GetValue<bool>("VerifyImages");
 
         })
         .AddDbContext<ExpensifyContext>((provider, options) =>

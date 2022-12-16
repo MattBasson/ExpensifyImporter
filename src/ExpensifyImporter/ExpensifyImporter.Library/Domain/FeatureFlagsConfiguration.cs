@@ -24,5 +24,10 @@ namespace ExpensifyImporter.Library.Domain
         /// </summary>
         public bool DownloadImages { get; set; }
 
+        /// <summary>
+        /// If true instructs the worker to verify downloaded images for items already in the database.
+        /// </summary>
+        public bool VerifyImages { get; set; }
+
     }
 }

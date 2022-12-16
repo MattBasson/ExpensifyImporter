@@ -66,6 +66,13 @@ namespace ExpensifyImporter.Application
                     _logger.LogInformation("Download images  enabled running download image sequencer");
                     await _imageToDatabaseSequencer.ProcessAsync(_workerConfiguration.ImageDownloadBatchSize);
                 }
+
+                if (_featureConfiguration.VerifyImages)
+                {
+                    _logger.LogInformation("Verify images enabled running image verifier sequencer");
+
+                    //Todo: Add image verifier sequencer here.
+                }
                 await Task.Delay(_workerConfiguration.Interval, stoppingToken);
             }
         }
