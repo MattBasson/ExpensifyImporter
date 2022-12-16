@@ -23,8 +23,23 @@ namespace ExpensifyImporter.Library.Modules.Sequencing
         }
 
         public async Task<int> ProcessAsync(int batchSize = 0)
-        {
-            //Todo: add sequencing logic here.
+       { 
+            // 1) Get dataset of items that have image set and are not verified (batch size sensitive)
+            _logger.LogInformation("Get dataset of items that have image set and are not verified (batch size sensitive) : {BatchSize}", batchSize);
+            //ExpenseImageBatchQuery returns ExpenseID array
+            var query = await _expenseImageBatchQuery.ExecuteAsync(expense => expense.ReceiptImage != null && !expense.ImageVerified ,batchSize);
+
+
+            // 2) Download images  return an array of ExpenseIds and byte arrays.
+            _logger.LogInformation("Downloading image batch {BatchSize}", batchSize);
+            var downloadResult = await _expensifyImageDownloader.ExecuteAsync(query);
+
+
+            // 3) Verfy the downloaded images with those saved.
+            _logger.LogInformation("Verfy the downloaded images with those saved. {BatchSize}", batchSize);
+
+
+
             return await Task.FromResult(0);
         }
     }

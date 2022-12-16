@@ -23,9 +23,9 @@ namespace ExpensifyImporter.UnitTests.Modules.Expensify
             //Arrange
             var batch = new List<ExpenseImageBatchQueryResult>()
             {
-                new(Guid.NewGuid(), Constants.CatImageUrl1),
-                new(Guid.NewGuid(), Constants.CatImageUrl2),
-                new(Guid.NewGuid(), Constants.CatImageUrl3)
+                new(Guid.NewGuid(), Constants.CatImageUrl1,null),
+                new(Guid.NewGuid(), Constants.CatImageUrl2,null),
+                new(Guid.NewGuid(), Constants.CatImageUrl3, null)
             };
             const string EmbeddedDataPath = "ExpensifyImporter.UnitTests.Modules.IO.Data.";
             var expectedResult = new List<ExpensifyImageDownloadResult>()
@@ -60,9 +60,9 @@ namespace ExpensifyImporter.UnitTests.Modules.Expensify
             //Arrange
             var batch = new List<ExpenseImageBatchQueryResult>()
             {
-                new(Guid.NewGuid(), Constants.CatImageUrl1),
-                new(Guid.NewGuid(), Constants.CatImageUrl1),
-                new(Guid.NewGuid(), Constants.CatImageUrl1)
+                new(Guid.NewGuid(), Constants.CatImageUrl1,null),
+                new(Guid.NewGuid(), Constants.CatImageUrl1,null),
+                new(Guid.NewGuid(), Constants.CatImageUrl1,null)
             };
             const string EmbeddedDataPath = "ExpensifyImporter.UnitTests.Modules.IO.Data.";
             var catImage1ByteArray = await EmbeddedData.GetByteArrayAsync(
@@ -96,9 +96,9 @@ namespace ExpensifyImporter.UnitTests.Modules.Expensify
             //Arrange
             var batch = new List<ExpenseImageBatchQueryResult>()
             {
-                new(Guid.NewGuid(), null),
-                new(Guid.NewGuid(), null),
-                new(Guid.NewGuid(), null)
+                new(Guid.NewGuid(), null,null),
+                new(Guid.NewGuid(), null,null),
+                new(Guid.NewGuid(), null,null)
             };
             
             var expectedResult = new List<ExpensifyImageDownloadResult>()

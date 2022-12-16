@@ -121,7 +121,7 @@ namespace ExpensifyImporter.UnitTests.Modules.Database
                     Substitute.For<ILogger<ExpenseImageBatchQuery>>(),
                     dbContext);
 
-            var exepectedIds = await dbContext.Expense.Select(s => new ExpenseImageBatchQueryResult(s.Id,s.ReceiptUrl)).ToListAsync();
+            var exepectedIds = await dbContext.Expense.Select(s => new ExpenseImageBatchQueryResult(s.Id,s.ReceiptUrl,s.ReceiptImage)).ToListAsync();
             
             //Act
             var response =  await sut.ExecuteAsync();
@@ -155,7 +155,7 @@ namespace ExpensifyImporter.UnitTests.Modules.Database
             var expectedExpenses = await dbContext.Expense
                 .Where(w => w.ReceiptImage == null)
                 .Take(batchSize)
-                .Select(s => new ExpenseImageBatchQueryResult(s.Id, s.ReceiptUrl))
+                .Select(s => new ExpenseImageBatchQueryResult(s.Id, s.ReceiptUrl,s.ReceiptImage))
                 .ToListAsync();
 
             //Act

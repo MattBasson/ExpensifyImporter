@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExpensifyImporter.Library.Modules.Database
 {
-    public record ExpenseImageBatchQueryResult(Guid ExpenseId,string? Url);
+    public record ExpenseImageBatchQueryResult(Guid ExpenseId,string? Url, byte[]? ReceiptImage);
     public class ExpenseImageBatchQuery
     {
         private readonly ILogger<ExpenseImageBatchQuery> _logger;
@@ -32,7 +32,7 @@ namespace ExpensifyImporter.Library.Modules.Database
                 queryable = queryable.Take(batchSize);
             }
 
-            return await queryable.Select(s => new ExpenseImageBatchQueryResult(s.Id, s.ReceiptUrl)).ToListAsync();
+            return await queryable.Select(s => new ExpenseImageBatchQueryResult(s.Id, s.ReceiptUrl,s.ReceiptImage)).ToListAsync();
         }
     }
 }
