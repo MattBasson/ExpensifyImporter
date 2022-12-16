@@ -16,11 +16,15 @@ namespace ExpensifyImporter.UnitTests.Modules.Excel
 
     public class ExcelReaderTests
     {
+        
+        private readonly string dataDirectory = $"{Environment.CurrentDirectory}{Path.DirectorySeparatorChar}Modules{Path.DirectorySeparatorChar}Excel{Path.DirectorySeparatorChar}Data{Path.DirectorySeparatorChar}"; 
+
+      
         [Fact]
         public void Reading_Excel_Test_File_Exists()
         {
             //Arrange
-            var path = $"{Environment.CurrentDirectory}\\Modules\\Excel\\Data\\TestExcel.xlsx";
+            var path = $"{dataDirectory}TestExcel.xlsx";
 
             //Act
 
@@ -33,8 +37,8 @@ namespace ExpensifyImporter.UnitTests.Modules.Excel
         [Fact]
         public async Task Reading_Excel_File_Yields_Results()
         {
-            //Arrange
-            var path = $"{Environment.CurrentDirectory}\\Modules\\Excel\\Data\\TestExcel.xlsx";
+            //Arrange            
+            var path = $"{dataDirectory}TestExcel.xlsx";
             var excelReader = new ExcelReader(Substitute.For<ILogger<ExcelReader>>());
 
             var excelResponse = await excelReader.ReadAsJsonAsync(path);
@@ -51,7 +55,7 @@ namespace ExpensifyImporter.UnitTests.Modules.Excel
         {
 
             //Arrange
-            var path = $"{Environment.CurrentDirectory}\\Modules\\Excel\\Data\\TestExcel.xlsx";
+            var path = $"{dataDirectory}TestExcel.xlsx";
             var excelReader = new ExcelReader(Substitute.For<ILogger<ExcelReader>>());
 
             var expectedResponseDEserialised = new List<List<string[][]>>();

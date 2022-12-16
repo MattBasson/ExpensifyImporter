@@ -14,7 +14,8 @@ namespace ExpensifyImporter.UnitTests.Modules.IO
 {
     public class ExcelFileWatcherTests : IDisposable
     {
-        private readonly string _testWatchDirectory = $"{Environment.CurrentDirectory}\\TestWatchDir";
+        
+        private readonly string _testWatchDirectory = $"{Environment.CurrentDirectory}{Path.DirectorySeparatorChar}TestWatchDir{Path.DirectorySeparatorChar}";
         private readonly ExcelFileWatcher _fileWatcher;
 
         public ExcelFileWatcherTests()
@@ -31,7 +32,7 @@ namespace ExpensifyImporter.UnitTests.Modules.IO
             using var excelFileWatcherMonitor = _fileWatcher.Monitor();
 
            
-            File.WriteAllText($"{_testWatchDirectory}\\testFile.xlsx","Test Test Test");
+            File.WriteAllText($"{_testWatchDirectory}testFile.xlsx","Test Test Test");
             
             //Sleeping for a second to let the events register.
             Thread.Sleep(1000);
@@ -53,10 +54,10 @@ namespace ExpensifyImporter.UnitTests.Modules.IO
             using var excelFileWatcherMonitor = _fileWatcher.Monitor();
 
 
-            File.WriteAllText($"{_testWatchDirectory}\\testFile.xls", "Test Test Test");
-            File.WriteAllText($"{_testWatchDirectory}\\testFile.txt", "Test Test Test");
-            File.WriteAllText($"{_testWatchDirectory}\\testFile.png", "Test Test Test");
-            File.WriteAllText($"{_testWatchDirectory}\\testFile.docx", "Test Test Test");
+            File.WriteAllText($"{_testWatchDirectory}testFile.xls", "Test Test Test");
+            File.WriteAllText($"{_testWatchDirectory}testFile.txt", "Test Test Test");
+            File.WriteAllText($"{_testWatchDirectory}testFile.png", "Test Test Test");
+            File.WriteAllText($"{_testWatchDirectory}testFile.docx", "Test Test Test");
 
             //Sleeping for a second to let the events register.
             Thread.Sleep(1000);

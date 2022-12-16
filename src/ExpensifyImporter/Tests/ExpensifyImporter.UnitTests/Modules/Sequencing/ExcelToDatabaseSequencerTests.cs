@@ -14,6 +14,8 @@ public class ExcelToDatabaseSequencerTests
 {
     private readonly List<Expense> _expenseList;
 
+    private readonly string dataDirectory = $"{Environment.CurrentDirectory}{Path.DirectorySeparatorChar}Modules{Path.DirectorySeparatorChar}Sequencing{Path.DirectorySeparatorChar}Data{Path.DirectorySeparatorChar}";
+
     public ExcelToDatabaseSequencerTests()
     {
         _expenseList = new List<Expense>
@@ -117,7 +119,7 @@ public class ExcelToDatabaseSequencerTests
     public void Reading_Excel_Test_File_Exists()
     {
         //Arrange
-        var path = $"{Environment.CurrentDirectory}\\Modules\\Sequencing\\Data\\Expense_Batch_Test_2017_02_01_1.xlsx";
+        var path = $"{dataDirectory}Expense_Batch_Test_2017_02_01_1.xlsx";
 
         //Act
 
@@ -131,7 +133,7 @@ public class ExcelToDatabaseSequencerTests
     public async Task When_ProcessDocumentAsync_Ensure_All_Items_Are_Added_To_DB()
     {
         //Arrange
-        var path = $"{Environment.CurrentDirectory}\\Modules\\Sequencing\\Data\\Expense_Batch_Test_2017_02_01_1.xlsx";
+        var path = $"{dataDirectory}Expense_Batch_Test_2017_02_01_1.xlsx";
         var dbContext = SQLiteHelper.CreateSqliteContext();
         var excelReader = new ExcelReader(Substitute.For<ILogger<ExcelReader>>());
         var excelDtoMapper = new ExcelDtoMapper(Substitute.For<ILogger<ExcelDtoMapper>>());
@@ -163,7 +165,7 @@ public class ExcelToDatabaseSequencerTests
     public async Task When_ProcessDocumentAsync_With_DuplicateData_Ensure_No_Items_Added() 
     {
         //Arrange
-        var path = $"{Environment.CurrentDirectory}\\Modules\\Sequencing\\Data\\Expense_Batch_Test_2017_02_01_1.xlsx";
+        var path = $"{dataDirectory}Expense_Batch_Test_2017_02_01_1.xlsx";
         var dbContext = SQLiteHelper.CreateSqliteContext();
 
         await dbContext.Expense.AddRangeAsync(_expenseList);
