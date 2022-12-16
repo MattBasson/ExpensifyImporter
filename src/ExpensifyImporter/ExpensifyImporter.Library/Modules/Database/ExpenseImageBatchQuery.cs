@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 
 using ExpensifyImporter.Database;
+using ExpensifyImporter.Database.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpensifyImporter.Library.Modules.Database
@@ -19,14 +20,19 @@ namespace ExpensifyImporter.Library.Modules.Database
 
         public async Task<IEnumerable<ExpenseImageBatchQueryResult>> ExecuteAsync(int batchSize = 0)
         {
-            var queryable =  _dbContext.Expense.Where(expense => expense.ReceiptImage == null && expense.ReceiptUrl != null);
+            return await ExecuteAsync(expense => expense.ReceiptImage == null && expense.ReceiptUrl != null,batchSize);
+        }
+
+        public async Task<IEnumerable<ExpenseImageBatchQueryResult>> ExecuteAsync(Expression<Func<Expense,bool>> query, int batchSize = 0)
+        {
+            var queryable = _dbContext.Expense.Where(query);
 
             if (batchSize > 0)
             {
                 queryable = queryable.Take(batchSize);
             }
 
-            return await queryable.Select(s=> new ExpenseImageBatchQueryResult(s.Id,s.ReceiptUrl)).ToListAsync();
+            return await queryable.Select(s => new ExpenseImageBatchQueryResult(s.Id, s.ReceiptUrl)).ToListAsync();
         }
     }
 }
