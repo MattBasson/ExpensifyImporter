@@ -1,5 +1,6 @@
 ﻿using System;
 using ExpensifyImporter.Library.Modules.Expensify;
+using ExpensifyImporter.Library.Modules.IO;
 
 namespace ExpensifyImporter.Library.Modules.Sequencing
 {
@@ -9,16 +10,19 @@ namespace ExpensifyImporter.Library.Modules.Sequencing
         private readonly ExpenseImageBatchQuery _expenseImageBatchQuery;
         private readonly ExpensifyImageDownloader _expensifyImageDownloader;
         private readonly ExpenseImageBatchCommand _expenseImageBatchCommand;
+        private readonly ExpenseImageVerifier _expenseImageVerifier;
 
         public ImageDatabaseVerificationSequencer(
             ILogger<ImageToDatabaseSequencer> logger,
             ExpenseImageBatchQuery expenseImageBatchQuery,
             ExpensifyImageDownloader expensifyImageDownloader,
+            ExpenseImageVerifier expenseImageVerifier,
             ExpenseImageBatchCommand expenseImageBatchCommand)
         {
             _logger = logger;
             _expenseImageBatchQuery = expenseImageBatchQuery;
             _expensifyImageDownloader = expensifyImageDownloader;
+            _expenseImageVerifier = expenseImageVerifier;
             _expenseImageBatchCommand = expenseImageBatchCommand;
         }
 
@@ -37,6 +41,7 @@ namespace ExpensifyImporter.Library.Modules.Sequencing
 
             // 3) Verfy the downloaded images with those saved.
             _logger.LogInformation("Verfy the downloaded images with those saved. {BatchSize}", batchSize);
+            var verificationResult = _expenseImageVerifier.Execute(query, downloadResult);
 
 
 
