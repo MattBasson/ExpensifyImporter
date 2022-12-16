@@ -35,6 +35,8 @@ namespace ExpensifyImporter.Database
                 entity.Property(e => e.Category).HasColumnType("nvarchar(1000)");
                 entity.Property(e => e.ReceiptImage).HasColumnType("MEDIUMBLOB");
                 entity.Property(e => e.CompanyId).HasDefaultValue(1);
+                entity.Property(e => e.ImageVerified).HasDefaultValue(false);
+                entity.Property(e => e.ImageVerifedDateTime).HasColumnType<DateTime?>("DATETIME");
 
             });
         }

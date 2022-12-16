@@ -43,6 +43,16 @@ namespace ExpensifyImporter.Database.Migrations
                         .HasDefaultValue(1)
                         .HasColumnName("company_id");
 
+                    b.Property<DateTime?>("ImageVerifedDateTime")
+                        .HasColumnType("DATETIME")
+                        .HasColumnName("image_verified_datetime");
+
+                    b.Property<bool>("ImageVerified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(false)
+                        .HasColumnName("image_verified");
+
                     b.Property<string>("Merchant")
                         .HasColumnType("nvarchar(1000)")
                         .HasColumnName("merchant");

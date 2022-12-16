@@ -38,5 +38,12 @@ namespace ExpensifyImporter.Database.Domain
         [Column("company_id")]
         public int CompanyId { get; set; }
 
+        [Column("image_verified")]
+        public bool ImageVerified { get; set; }
+
+        [Column("image_verified_datetime")]
+        public DateTime? ImageVerifedDateTime { get; set; }
+
+
     }
 }
