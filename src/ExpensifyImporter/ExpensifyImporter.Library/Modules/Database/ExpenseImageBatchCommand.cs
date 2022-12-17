@@ -38,14 +38,14 @@ namespace ExpensifyImporter.Library.Modules.Database
 
         private async Task<IEnumerable<Expense>> GetExpensesToUpdate(IEnumerable<ExpensifyImageDownloadResult> batch)
         {
-            var batchIdCollection = batch.Select(s => s.ExpenseId);
+            var batchIdCollection = batch.Select(s => s.Id);
             return await _dbContext.Expense.Where(w => batchIdCollection.Contains(w.Id)).ToListAsync();
         }
 
         private  Task<Expense> UpdateExpenseByDownloadResult(ExpensifyImageDownloadResult downloadResult)
         {
             
-            var result = _expensesToUpdate?.Single(s => s.Id == downloadResult.ExpenseId);
+            var result = _expensesToUpdate?.Single(s => s.Id == downloadResult.Id);
             result!.ReceiptImage = downloadResult.FileContents;
 
             return Task.FromResult(result);
