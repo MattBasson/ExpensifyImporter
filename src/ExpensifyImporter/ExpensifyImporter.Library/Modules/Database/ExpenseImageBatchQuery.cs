@@ -2,11 +2,12 @@
 
 using ExpensifyImporter.Database;
 using ExpensifyImporter.Database.Domain;
+using ExpensifyImporter.Library.Modules.Database.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpensifyImporter.Library.Modules.Database
 {
-    public record ExpenseImageBatchQueryResult(Guid ExpenseId,string? Url, byte[]? ReceiptImage);
+    public record ExpenseImageBatchQueryResult(Guid Id,string? Url, byte[]? ReceiptImage) : EntityRecord(Id);
     public class ExpenseImageBatchQuery
     {
         private readonly ILogger<ExpenseImageBatchQuery> _logger;
@@ -17,7 +18,7 @@ namespace ExpensifyImporter.Library.Modules.Database
             _logger = logger;
             _dbContext = dbContext;
         }
-
+        //Todo: Remove this function , iit can be replaced by sibling
         public async Task<IEnumerable<ExpenseImageBatchQueryResult>> ExecuteAsync(int batchSize = 0)
         {
             return await ExecuteAsync(expense => expense.ReceiptImage == null && expense.ReceiptUrl != null,batchSize);

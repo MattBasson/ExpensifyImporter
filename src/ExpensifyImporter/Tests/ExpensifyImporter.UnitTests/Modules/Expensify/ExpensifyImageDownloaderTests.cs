@@ -30,12 +30,12 @@ namespace ExpensifyImporter.UnitTests.Modules.Expensify
             const string EmbeddedDataPath = "ExpensifyImporter.UnitTests.Modules.IO.Data.";
             var expectedResult = new List<ExpensifyImageDownloadResult>()
             {
-                new(batch[0].ExpenseId, await EmbeddedData.GetByteArrayAsync(
+                new(batch[0].Id, await EmbeddedData.GetByteArrayAsync(
                     $"{EmbeddedDataPath}{Constants.CatImageFile1}",
                     Assembly.GetAssembly(typeof(ExpensifyImageDownloaderTests)))),
-                new (batch[1].ExpenseId, await EmbeddedData.GetByteArrayAsync($"{EmbeddedDataPath}{Constants.CatImageFile2}",
+                new (batch[1].Id, await EmbeddedData.GetByteArrayAsync($"{EmbeddedDataPath}{Constants.CatImageFile2}",
                     Assembly.GetAssembly(typeof(ExpensifyImageDownloaderTests)))),
-                new (batch[2].ExpenseId, await EmbeddedData.GetByteArrayAsync($"{EmbeddedDataPath}{Constants.CatImageFile3}",
+                new (batch[2].Id, await EmbeddedData.GetByteArrayAsync($"{EmbeddedDataPath}{Constants.CatImageFile3}",
                     Assembly.GetAssembly(typeof(ExpensifyImageDownloaderTests)))),
             };
             
@@ -70,9 +70,9 @@ namespace ExpensifyImporter.UnitTests.Modules.Expensify
                 Assembly.GetAssembly(typeof(ExpensifyImageDownloaderTests)));
             var expectedResult = new List<ExpensifyImageDownloadResult>()
             {
-                new(batch[0].ExpenseId, catImage1ByteArray),
-                new(batch[1].ExpenseId, catImage1ByteArray),
-                new(batch[2].ExpenseId, catImage1ByteArray),
+                new(batch[0].Id, catImage1ByteArray),
+                new(batch[1].Id, catImage1ByteArray),
+                new(batch[2].Id, catImage1ByteArray),
             };
 
             var fakeImageDownloaderMessageHandler = new FakeImageDownloaderHttpMessageHandler();
@@ -103,11 +103,11 @@ namespace ExpensifyImporter.UnitTests.Modules.Expensify
             
             var expectedResult = new List<ExpensifyImageDownloadResult>()
             {
-                new(batch[0].ExpenseId, null),
+                new(batch[0].Id, null),
                     
-                new (batch[1].ExpenseId, null),
+                new (batch[1].Id, null),
                     
-                new (batch[2].ExpenseId,null),
+                new (batch[2].Id,null),
             };
 
             var fakeImageDownloaderMessageHandler = new FakeImageDownloaderHttpMessageHandler();

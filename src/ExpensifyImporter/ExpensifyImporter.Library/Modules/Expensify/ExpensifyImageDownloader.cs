@@ -1,8 +1,9 @@
-﻿using ExpensifyImporter.Library.Modules.IO;
+﻿using ExpensifyImporter.Library.Modules.Database.Domain;
+using ExpensifyImporter.Library.Modules.IO;
 
 namespace ExpensifyImporter.Library.Modules.Expensify
 {
-    public record ExpensifyImageDownloadResult(Guid ExpenseId, byte[]? FileContents);
+    public record ExpensifyImageDownloadResult(Guid Id, byte[]? FileContents) :EntityRecord(Id);
     public class ExpensifyImageDownloader
     {
         private readonly ILogger<ExpensifyImageDownloader> _logger;
@@ -19,7 +20,7 @@ namespace ExpensifyImporter.Library.Modules.Expensify
         public async Task<IEnumerable<ExpensifyImageDownloadResult>> ExecuteAsync(IEnumerable<ExpenseImageBatchQueryResult> batch)
         {
             var tasks = batch.Select(expenseImageBatchQueryResult =>
-                GetDownloadResult(expenseImageBatchQueryResult.ExpenseId, expenseImageBatchQueryResult.Url)).ToList();
+                GetDownloadResult(expenseImageBatchQueryResult.Id, expenseImageBatchQueryResult.Url)).ToList();
            
             return await Task.WhenAll(tasks);
         }

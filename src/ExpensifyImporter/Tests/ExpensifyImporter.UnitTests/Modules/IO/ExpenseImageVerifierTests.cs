@@ -71,8 +71,8 @@ namespace ExpensifyImporter.UnitTests.Modules.IO
 
 
             //Assert
-            result.Should().BeEquivalentTo(expectedResult, opt => opt.Excluding(e => e.verifiedDateTime));
-            result.Any(a => a.verifiedDateTime == null).Should().BeFalse();
+            result.Should().BeEquivalentTo(expectedResult, opt => opt.Excluding(e => e.VerifiedDateTime));
+            result.Any(a => a.VerifiedDateTime == null).Should().BeFalse();
 
 
 
@@ -123,7 +123,7 @@ namespace ExpensifyImporter.UnitTests.Modules.IO
 
             //Assert
             result.Should().BeEquivalentTo(expectedResult);
-            result.Any(a => a.verifiedDateTime == null).Should().BeTrue();
+            result.Any(a => a.VerifiedDateTime == null).Should().BeTrue();
 
 
 
@@ -171,9 +171,9 @@ namespace ExpensifyImporter.UnitTests.Modules.IO
 
 
             //Assert
-            result.Should().BeEquivalentTo(expectedResult,opt => opt.Excluding(e=>e.verifiedDateTime));
-            result.Count(c => c.verifiedDateTime != null).Should().Be(2);
-            result.Last().verifiedDateTime.Should().BeNull();
+            result.Should().BeEquivalentTo(expectedResult,opt => opt.Excluding(e=>e.VerifiedDateTime));
+            result.Count(c => c.VerifiedDateTime != null).Should().Be(2);
+            result.Last().VerifiedDateTime.Should().BeNull();
             
 
 
